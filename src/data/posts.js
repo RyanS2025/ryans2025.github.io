@@ -3,6 +3,7 @@ const posts = [
     slug: "building-lost-and-hound",
     title: "Building Lost and Hound",
     date: "2026-03-17",
+    featured: true,
     excerpt:
       "How our team built a campus lost-and-found platform with React, Supabase, and an interactive map.",
     body: `Lost and Hound started as a group project to solve a real problem at Northeastern — items go missing every day across campus, and there's no central place to connect owners with the people who find them.
