@@ -32,7 +32,7 @@ export default function Home() {
       <section className="max-w-5xl mx-auto px-6 pb-20">
         <h2 className="text-2xl font-bold mb-6">Featured Work</h2>
         <div className="grid md:grid-cols-2 gap-6">
-          {projects.slice(0, 2).map((project) => (
+          {projects.filter((project) => project.featured).map((project) => (
             <div key={project.slug}
               className="border border-white/5 rounded-xl overflow-hidden hover:-translate-y-1 transition-transform">
               <img src={project.images[0]} alt={project.title} className="w-full h-48 object-contain bg-gray-900 p-4" />
