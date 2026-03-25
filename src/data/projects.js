@@ -18,6 +18,24 @@ const projects = [
     link: "https://github.com/RyanS2025/Lost-and-Hound/tree/main",
     featured: true
   },
+  { // WNBA Reference
+    slug: "wnba-reference",
+    title: "WNBA Reference",
+    description:
+      "A full-stack WNBA stat tracker featuring 180+ players with searchable/sortable stats, team pages with rosters, shooting splits, and a dark glassmorphism UI with team-colored accents and ESPN headshots.",
+    tags: ["React", "Vite", "Tailwind CSS", "Express", "ESPN Data"],
+    images: [
+      "/images/wnba-reference/WNBALogo.png",
+      "/images/wnba-reference/WNBARefHero.png",
+      "/images/wnba-reference/WNBARefDashboard.png",
+      "/images/wnba-reference/WNBARefTeams.png",
+      "/images/wnba-reference/WNBARefTeamDetail.png",
+      "/images/wnba-reference/WNBARefPlayers.png",
+      "/images/wnba-reference/WNBARefPlayerDetail.png",
+    ],
+    link: "https://github.com/RyanS2025/WNBA-Reference",
+    featured: true
+  },
   { // Basketball-Sim
     slug: "basketball-simulation",
     title: "NBA Season Simulator",
