@@ -1,19 +1,38 @@
+import { useRef, useCallback } from "react";
+import html2canvas from "html2canvas";
 import StarField from "../components/StarField";
+import ResumeTemplate from "../components/ResumeTemplate";
+import resumeData from "../data/resumeData";
 
 export default function About() {
-  const skills = ["JavaScript", "React", "Python", "HTML/CSS", "Tailwind", "Git", "SQL", "Supabase", "Node.js", "Java", "C++", "VS Code", "GitHub", "Vite", "Team Leadership", "Event Planning", "Public Speaking"];
+  const resumeRef = useRef(null);
+
+  const downloadResume = useCallback(async () => {
+    if (!resumeRef.current) return;
+    const canvas = await html2canvas(resumeRef.current, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+    });
+    const link = document.createElement("a");
+    link.download = "RyanSinha_Resume.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  }, []);
+
+  const skills = resumeData.skills;
 
   const education = [
   { year: "2025 – 2029", school: "Northeastern University", degree: "Computer Science & Business Administration", note: "Courses: Program Design & Implementation, Discrete Structures" },
   { year: "2021 – 2025", school: "West Orange High School", degree: "GPA 4.47, Top 10%", note: "Courses: AP Computer Science, Java, C++, Visual Basic" },
   ];
 
-  const experience = [
-  { year: "2025 - 2025", role: "Crew Member", company: "Tropical Smoothie Cafe", note: "Customer service, food prep, POS operations, and daily closing procedures." },
-  { year: "2023 – 2025", role: "Shift Leader", company: "Guerriero Gelato", note: "Led shifts, managed team workflow, and maintained store operations." },
-  { year: "2022 – 2025", role: "Emcee / Founding Organizer", company: "United Asian Voices Diwali Festival", note: "Co-created an annual Diwali Festival in West Orange, scripted events, and promoted local businesses." },
-  { year: "2021 – 2023", role: "Camp Leader", company: "West Orange Summer Enrichment", note: "Taught music to young students and supervised aftercare programs." },
-  ];
+  const experience = resumeData.experience.map((exp) => ({
+    year: exp.dates,
+    role: exp.role,
+    company: exp.company,
+    note: exp.bullets[0],
+  }));
 
   return (
     <>
@@ -51,13 +70,12 @@ export default function About() {
           <div className="flex items-center justify-between border-b border-amber-400 pb-2">
             {/* Resume */}
             <h2 className="text-3xl font-bold">Resume</h2>
-            <a
-              href="/RyanSinhaResumeWebsite.png"
-              target="_blank"
-              className="text-md text-amber-400 hover:text-amber-300 transition-colors"
+            <button
+              onClick={downloadResume}
+              className="text-md text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
             >
               Download Resume →
-            </a>
+            </button>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
@@ -101,6 +119,18 @@ export default function About() {
             </div>
           </div>
         </section>
+      </div>
+
+      {/* Hidden resume for PNG capture */}
+      <div
+        style={{
+          position: "absolute",
+          left: "-9999px",
+          top: 0,
+        }}
+        aria-hidden="true"
+      >
+        <ResumeTemplate ref={resumeRef} />
       </div>
     </>
   );
