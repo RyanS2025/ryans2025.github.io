@@ -77,7 +77,15 @@ export default function ProjectModal({ project, onClose }) {
 
                 {/* Title + Dots */}
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-[22px] font-semibold tracking-tight">{project.title}</h2>
+                    <div className="flex items-center gap-2">
+                        <h2 className="text-[22px] font-semibold tracking-tight">{project.title}</h2>
+                        {project.comingSoon && (
+                            <span className="text-xs bg-amber-400 text-gray-950 px-2 py-0.5 rounded-full font-semibold">Coming Soon</span>
+                        )}
+                        {project.active && (
+                            <span className="text-xs bg-green-400 text-gray-950 px-2 py-0.5 rounded-full font-semibold">Active</span>
+                        )}
+                    </div>
                     {project.images.length > 1 && (
                         <div className="flex gap-1.5 items-center">
                             {project.images.map((_, i) => (

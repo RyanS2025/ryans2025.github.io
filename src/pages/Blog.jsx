@@ -21,12 +21,17 @@ export default function Blog() {
 
         <section className="relative z-10 max-w-5xl mx-auto px-6 py-12">
           <div className="flex flex-col gap-4">
-            {posts.map((post) => (
+            {[...posts].sort((a, b) => b.date.localeCompare(a.date)).map((post) => (
               <Link to={`/blog/${post.slug}`} key={post.slug}
                 className="block bg-gray-900 border border-white/10 rounded-xl p-5 hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-400/10 transition-all">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h2 className="font-semibold text-lg">{post.title}</h2>
+                    <div className="flex items-center gap-2">
+                      <h2 className="font-semibold text-lg">{post.title}</h2>
+                      {post.comingSoon && (
+                        <span className="text-xs bg-amber-400 text-gray-950 px-2 py-0.5 rounded-full font-semibold">Coming Soon</span>
+                      )}
+                    </div>
                     <p className="text-sm text-gray-400 mt-1">{post.excerpt}</p>
                   </div>
                   <span className="text-sm text-gray-500 whitespace-nowrap ml-4">{post.date}</span>

@@ -7,7 +7,18 @@ import StarField from "../components/StarField";
 export default function Projects() {
   const [filter, setFilter] = useState("All");
   const allTags = ["All", ...new Set(projects.flatMap((p) => p.tags))];
-  const visible = filter === "All" ? projects : projects.filter((p) => p.tags.includes(filter));
+  const sorted = [...projects].sort((a, b) => {
+    const tier = (p) => {
+      if (p.comingSoon) return 0;
+      if (p.active) return 1;
+      if (p.featured) return 2;
+      return 3;
+    };
+    const tierDiff = tier(a) - tier(b);
+    if (tierDiff !== 0) return tierDiff;
+    return b.date.localeCompare(a.date);
+  });
+  const visible = filter === "All" ? sorted : sorted.filter((p) => p.tags.includes(filter));
   const [selected, setSelected] = useState(null);
 
   return (
@@ -53,7 +64,15 @@ export default function Projects() {
                       <span key={tag} className="text-xs bg-gray-800 px-2 py-1 rounded-full">{tag}</span>
                     ))}
                   </div>
-                  <h3 className="font-semibold text-lg">{project.title}</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-lg">{project.title}</h3>
+                    {project.comingSoon && (
+                      <span className="text-xs bg-amber-400 text-gray-950 px-2 py-0.5 rounded-full font-semibold">Coming Soon</span>
+                    )}
+                    {project.active && (
+                      <span className="text-xs bg-green-400 text-gray-950 px-2 py-0.5 rounded-full font-semibold">Active</span>
+                    )}
+                  </div>
                   <p className="text-sm text-gray-400 mt-1">{project.description}</p>
                 </div>
               </div>

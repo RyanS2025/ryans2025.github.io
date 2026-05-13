@@ -1,24 +1,34 @@
-import { useRef, useCallback } from "react";
+import { useRef, useState, useCallback } from "react";
+import { AnimatePresence } from "framer-motion";
 import html2canvas from "html2canvas";
 import StarField from "../components/StarField";
 import ResumeTemplate from "../components/ResumeTemplate";
+import ResumeModal from "../components/ResumeModal";
 import resumeData from "../data/resumeData";
 
 export default function About() {
   const resumeRef = useRef(null);
+  const [showResumeModal, setShowResumeModal] = useState(false);
+  const [resumeImage, setResumeImage] = useState(null);
 
-  const downloadResume = useCallback(async () => {
+  const openResumeModal = useCallback(async () => {
     if (!resumeRef.current) return;
     const canvas = await html2canvas(resumeRef.current, {
       scale: 2,
       useCORS: true,
       backgroundColor: "#ffffff",
     });
+    setResumeImage(canvas.toDataURL("image/png"));
+    setShowResumeModal(true);
+  }, []);
+
+  const downloadResume = useCallback(async () => {
+    if (!resumeImage) return;
     const link = document.createElement("a");
     link.download = "RyanSinha_Resume.png";
-    link.href = canvas.toDataURL("image/png");
+    link.href = resumeImage;
     link.click();
-  }, []);
+  }, [resumeImage]);
 
   const skills = resumeData.skills;
 
@@ -71,7 +81,7 @@ export default function About() {
             {/* Resume */}
             <h2 className="text-3xl font-bold">Resume</h2>
             <button
-              onClick={downloadResume}
+              onClick={openResumeModal}
               className="text-md text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
             >
               Download Resume →
@@ -120,6 +130,16 @@ export default function About() {
           </div>
         </section>
       </div>
+
+      <AnimatePresence>
+        {showResumeModal && (
+          <ResumeModal
+            onClose={() => setShowResumeModal(false)}
+            onDownload={downloadResume}
+            imageSrc={resumeImage}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Hidden resume for PNG capture */}
       <div

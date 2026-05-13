@@ -1,5 +1,6 @@
 const projects = [
   { //Lost and Hound
+    date: "2026-03-17",
     slug: "lost-and-hound",
     title: "Lost and Hound",
     description:
@@ -17,9 +18,11 @@ const projects = [
     ],
     link: "https://github.com/RyanS2025/Lost-and-Hound/tree/main",
     domain: "https://thelostandhound.com",
-    featured: true
+    featured: true,
+    active: true
   },
   { // WNBA Reference
+    date: "2026-03-25",
     slug: "wnba-reference",
     title: "WNBA Reference",
     description:
@@ -39,6 +42,7 @@ const projects = [
     featured: true
   },
   { // Basketball-Sim
+    date: "2025-09-01",
     slug: "basketball-simulation",
     title: "NBA Season Simulator",
     description: "Inspired by NBA 2K's MyLeague, a basketball simulation platform that allows users to simulate player stats for single games or full seasons, and search for real NBA player statistics. Features a web interface built with Flask, and custom simulation logic for basketball performance.",
@@ -51,6 +55,22 @@ const projects = [
     link: "https://github.com/RyanS2025/NBA-Season-Simulation",
     domain: null,
     featured: false
+  },
+  { // Backyard
+    date: "2026-05-13",
+    slug: "backyard",
+    title: "Backyard",
+    description:
+      "A Ghibli-inspired campus platform for discovering clubs, reading peer reviews, tracking live events, and connecting with friends — the social layer your university never built.",
+    tags: ["React", "Supabase", "Vite", "Tailwind"],
+    images: [
+      "/images/backyard/intro_screen_hero.gif",
+    ],
+    link: "https://github.com/ConnorFriedman10/Backyard",
+    domain: "https://explorethebackyard.com",
+    featured: true,
+    comingSoon: true,
+    active: false
   },
   // Add more...
 ];

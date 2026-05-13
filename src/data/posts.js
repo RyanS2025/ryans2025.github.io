@@ -46,6 +46,23 @@ Tools and techniques that made this work:
 
 The whole data collection process took about two hours across a few sessions. Not glamorous, but the result is a complete, self-contained database that powers every page of the app — no external dependencies at runtime.`,
   },
+  {
+    slug: "joining-backyard",
+    title: "From Lost and Hound to Backyard",
+    date: "2026-05-13",
+    featured: true,
+    excerpt:
+      "How leading Lost and Hound's development led to an invitation to join and mentor the team behind Backyard, a Ghibli-inspired campus club discovery platform.",
+    body: `A few weeks after wrapping up Lost and Hound, I got a message I wasn't expecting — an invitation to join the Backyard team, not just as a developer, but as a mentor.
+
+Backyard is a campus platform for discovering student organizations, reading peer reviews, and tracking live events — all wrapped in a hand-painted Ghibli-inspired UI. The team had seen what we built with Lost and Hound and wanted someone who'd been through the full cycle of shipping a campus product: scoping features, wiring up Supabase auth, managing a team, and actually deploying something students use.
+
+What got me the invite wasn't any single technical skill — it was the experience of leading a project end to end. With Lost and Hound, I learned how to break a big idea into shippable pieces, how to keep a team unblocked, and how to make architectural decisions under time pressure. Things like choosing Supabase over Firebase, building a reusable apiFetch wrapper, and setting up role-based moderation weren't just code decisions — they were leadership decisions that shaped how the whole team worked.
+
+Now with Backyard, I'm helping the team think through their architecture, review pull requests, and avoid the mistakes we made early on with Lost and Hound. It's a different kind of challenge — guiding without taking over, sharing context without micromanaging — and it's pushing me to grow in ways that writing code alone never would.
+
+The biggest takeaway: building something real and shipping it opens doors you can't predict. Lost and Hound wasn't just a portfolio project. It became the reason I'm now part of something bigger.`,
+  },
   // Add more...
 ];
 export default posts;
