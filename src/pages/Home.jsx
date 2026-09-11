@@ -22,7 +22,7 @@ export default function Home() {
             Hi, I'm <span className="text-amber-400">Ryan Sinha</span>.
           </h1>
           <p className="text-lg text-gray-400 mb-8 max-w-xl mx-auto">
-            I study Computer Science & Business Administration and build projects that solve real problems.
+            I study Computer Science & Business Administration, lead developer teams through Oasis at Northeastern, and build projects that solve real problems.
           </p>
           <div className="flex gap-3 justify-center">
             <Link to="/projects"

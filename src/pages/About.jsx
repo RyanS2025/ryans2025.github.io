@@ -46,18 +46,20 @@ export default function About() {
     note: `Courses: ${edu.coursework.join(", ")}`,
   }));
 
+  // Leadership leads, matching the resume's section order — the Oasis roles
+  // say more than the food-service jobs.
   const experience = [
-    ...resumeData.experience.map((exp) => ({
-      dates: exp.dates,
-      role: exp.title,
-      org: exp.company,
-      note: exp.bullets[0],
-    })),
     ...resumeData.leadership.map((act) => ({
       dates: act.dates,
       role: act.role,
       org: act.organization,
       note: act.bullets[0],
+    })),
+    ...resumeData.experience.map((exp) => ({
+      dates: exp.dates,
+      role: exp.title,
+      org: exp.company,
+      note: exp.bullets[0],
     })),
   ];
 
@@ -82,9 +84,10 @@ export default function About() {
             <div>
               <h1 className="text-3xl font-bold mb-4">About Me<span className="text-amber-400">.</span></h1>
               <p className="text-gray-400 leading-relaxed">
-                I'm Ryan, a first-year Computer Science and Business Administration student at Northeastern University.
+                I'm Ryan, a second-year Computer Science and Business Administration student at Northeastern University.
                 Originally from West Orange, New Jersey, I'm passionate about web development and love building tools that make people's lives easier.
-                I'm currently focused on growing my skills through personal projects and am looking forward to my first co-op experience.
+                Through Oasis at Northeastern I lead the developer teams behind Lost and Hound and Backyard, and I mentor first-year students
+                building their very first computer science project. I'm looking forward to my first co-op experience.
               </p>
             </div>
           </div>
@@ -134,7 +137,7 @@ export default function About() {
 
             <div>
               {/* Experience */}
-              <h3 className="text-xl font-semibold mb-3 mt-3">Experience</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-3">Leadership & Experience</h3>
               {experience.map((exp) => (
                 <div key={exp.org} className="border-l-2 border-amber-400 pl-4 mb-4">
                   <p className="text-sm text-amber-400">{exp.dates}</p>

@@ -11,7 +11,7 @@ const PAGE_MARGIN = 48; // 0.5 inch
 // document's @font-face rules, so a webfont would silently fall back there.
 const FONT_STACK = "Arial, Helvetica, sans-serif";
 const BODY_SIZE = "10.5px";
-const LINE_HEIGHT = 1.32;
+const LINE_HEIGHT = 1.28;
 
 const ResumeTemplate = forwardRef(function ResumeTemplate(_, ref) {
   const d = resumeData;
@@ -148,6 +148,24 @@ const ResumeTemplate = forwardRef(function ResumeTemplate(_, ref) {
           ))}
         </Section>
 
+        {/* Leadership & Activities sits above Experience: the Harvard
+            template advises promoting it when the activities are more
+            relevant to the role, and leading a dev team beats food service
+            for a software co-op. */}
+        <Section title="Leadership & Activities">
+          {d.leadership.map((act) => (
+            <Entry
+              key={act.organization}
+              title={act.organization}
+              titleRight={act.location}
+              subtitle={act.role}
+              subtitleRight={act.dates}
+            >
+              <Bullets items={act.bullets} />
+            </Entry>
+          ))}
+        </Section>
+
         {/* Experience */}
         <Section title="Experience">
           {d.experience.map((exp) => (
@@ -159,21 +177,6 @@ const ResumeTemplate = forwardRef(function ResumeTemplate(_, ref) {
               subtitleRight={exp.dates}
             >
               <Bullets items={exp.bullets} />
-            </Entry>
-          ))}
-        </Section>
-
-        {/* Leadership & Activities */}
-        <Section title="Leadership & Activities">
-          {d.leadership.map((act) => (
-            <Entry
-              key={act.organization}
-              title={act.organization}
-              titleRight={act.location}
-              subtitle={act.role}
-              subtitleRight={act.dates}
-            >
-              <Bullets items={act.bullets} />
             </Entry>
           ))}
         </Section>
@@ -200,13 +203,16 @@ function Section({ title, children, last }) {
           fontWeight: 700,
           textTransform: "uppercase",
           letterSpacing: "1px",
-          borderBottom: "1px solid #000",
-          padding: "0 0 2px",
-          margin: "0 0 5px",
+          lineHeight: 1.25,
+          margin: 0,
         }}
       >
         {title}
       </h2>
+      {/* The rule is its own block rather than a border-bottom on the h2:
+          html2canvas positions a border tight against the glyphs instead of
+          below the line box, so in the PNG it cut through the text. */}
+      <div style={{ height: "1px", backgroundColor: "#000", margin: "6px 0 4px" }} />
       {children}
     </section>
   );

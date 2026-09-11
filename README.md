@@ -6,7 +6,7 @@ My personal portfolio website — built with React, Tailwind CSS, and React Rout
 
 ## About
 
-I'm Ryan Sinha, a first-year Computer Science & Business student at Northeastern University. This site showcases my projects, blog posts, and a bit about me.
+I'm Ryan Sinha, a second-year Computer Science & Business student at Northeastern University. This site showcases my projects, blog posts, and a bit about me.
 
 ## Tech Stack
 

@@ -38,18 +38,10 @@ const resumeData = {
       ],
       honors: [],
     },
-    {
-      school: "West Orange High School",
-      location: "West Orange, NJ",
-      degree: "High School Diploma",
-      concentration: "",
-      gradDate: "June 2025",
-      gpa: "GPA: 4.47 (Top 10% of class)",
-      // Languages taken here are already covered under Skills, so listing
-      // the courses again would only cost a line.
-      coursework: ["AP Computer Science A"],
-      honors: [],
-    },
+    // West Orange High School (GPA 4.47, Top 10%, AP CS A) was removed once
+    // the Oasis and Backyard entries filled the page. Standard practice is to
+    // drop high school after freshman year, and the NEU GPA now carries the
+    // academic signal. Restore it here if a role specifically asks.
   ],
 
   projects: [
@@ -60,19 +52,20 @@ const resumeData = {
       dates: "March 2026 – Present",
       bullets: [
         "Built a full-stack campus platform for reporting and recovering lost items, with an interactive map and real-time messaging.",
-        "Designed the Postgres schema and row-level security policies in Supabase to keep user contact details private while keeping item reports publicly searchable.",
+        "Designed the Postgres schema and Supabase row-level security policies keeping contact details private and item reports searchable.",
         "Shipped an admin moderation dashboard and deployed to a custom domain, onboarding 100+ users across campus.",
         "Partnering with Northeastern's Curry Student Center on a November 2026 staff beta ahead of a planned Spring 2027 campus launch.",
       ],
     },
     {
-      name: "WNBA Reference",
-      link: { label: "github.com/RyanS2025/WNBA-Reference", href: "https://github.com/RyanS2025/WNBA-Reference" },
-      tech: "React, Vite, Tailwind CSS, Express, ESPN Data",
-      dates: "March 2026",
+      name: "Backyard",
+      link: { label: "explorethebackyard.com", href: "https://explorethebackyard.com" },
+      tech: "React, Supabase, Vite, Tailwind CSS",
+      dates: "May 2026 – Present",
       bullets: [
-        "Developed a full-stack statistics site covering 180+ WNBA players with searchable and sortable stat tables, team pages, rosters, and shooting splits.",
-        "Built an Express API layer that normalizes and caches ESPN data so repeat page loads are served from cache instead of refetching.",
+        "Direct a team of student developers as project lead and lead engineer, taking a campus club-discovery and events platform into production.",
+        "Administered authentication and account security, and refactored the existing codebase to stabilize it for release.",
+        "Built the club outreach wizard that onboards campus clubs onto the platform.",
       ],
     },
     {
@@ -122,6 +115,18 @@ const resumeData = {
   ],
 
   leadership: [
+    {
+      organization: "Oasis at Northeastern",
+      location: "Boston, MA",
+      // Two distinct roles: Accelerator is the program that staffs standout
+      // projects with dev teams; mentoring is separate and aimed at beginners.
+      role: "Accelerator Project Lead & Project Mentor",
+      dates: "September 2026 – December 2026",
+      bullets: [
+        "Lead the developer teams for Lost and Hound and Backyard through Accelerator, the Oasis program that staffs standout student projects.",
+        "Mentor first-year students through building their first computer science project, from environment setup to a working application.",
+      ],
+    },
     {
       organization: "United Asian Voices Diwali Festival",
       location: "West Orange, NJ",
