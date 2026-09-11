@@ -5,6 +5,7 @@ import StarField from "../components/StarField";
 import ResumeTemplate from "../components/ResumeTemplate";
 import ResumeModal from "../components/ResumeModal";
 import resumeData from "../data/resumeData";
+import { printResumeNode } from "../utils/printResume";
 
 export default function About() {
   const resumeRef = useRef(null);
@@ -30,19 +31,35 @@ export default function About() {
     link.click();
   }, [resumeImage]);
 
-  const skills = resumeData.skills;
+  const downloadResumePdf = useCallback(() => {
+    printResumeNode(resumeRef.current, "Ryan_Sinha_Resume");
+  }, []);
 
-  const education = [
-  { year: "2025 – 2029", school: "Northeastern University", degree: "Computer Science & Business Administration", note: "Courses: Program Design & Implementation, Discrete Structures" },
-  { year: "2021 – 2025", school: "West Orange High School", degree: "GPA 4.47, Top 10%", note: "Courses: AP Computer Science, Java, C++, Visual Basic" },
-  ];
+  // Everything below is derived from resumeData so the page and the PDF can't
+  // drift apart.
+  const skills = resumeData.skills.flatMap((group) => group.items);
 
-  const experience = resumeData.experience.map((exp) => ({
-    year: exp.dates,
-    role: exp.role,
-    company: exp.company,
-    note: exp.bullets[0],
+  const education = resumeData.education.map((edu) => ({
+    year: edu.gradDate,
+    school: edu.school,
+    degree: edu.degree,
+    note: `Courses: ${edu.coursework.join(", ")}`,
   }));
+
+  const experience = [
+    ...resumeData.experience.map((exp) => ({
+      dates: exp.dates,
+      role: exp.title,
+      org: exp.company,
+      note: exp.bullets[0],
+    })),
+    ...resumeData.leadership.map((act) => ({
+      dates: act.dates,
+      role: act.role,
+      org: act.organization,
+      note: act.bullets[0],
+    })),
+  ];
 
   return (
     <>
@@ -119,9 +136,9 @@ export default function About() {
               {/* Experience */}
               <h3 className="text-xl font-semibold mb-3 mt-3">Experience</h3>
               {experience.map((exp) => (
-                <div key={exp.year} className="border-l-2 border-amber-400 pl-4 mb-4">
-                  <p className="text-sm text-amber-400">{exp.year}</p>
-                  <h4 className="font-semibold">{exp.company}</h4>
+                <div key={exp.org} className="border-l-2 border-amber-400 pl-4 mb-4">
+                  <p className="text-sm text-amber-400">{exp.dates}</p>
+                  <h4 className="font-semibold">{exp.org}</h4>
                   <p className="text-sm text-gray-400">{exp.role}</p>
                   <p className="text-sm text-gray-500 mt-1">{exp.note}</p>
                 </div>
@@ -136,6 +153,7 @@ export default function About() {
           <ResumeModal
             onClose={() => setShowResumeModal(false)}
             onDownload={downloadResume}
+            onDownloadPdf={downloadResumePdf}
             imageSrc={resumeImage}
           />
         )}

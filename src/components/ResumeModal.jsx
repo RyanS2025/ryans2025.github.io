@@ -28,28 +28,42 @@ function playDing() {
   osc.stop(ctx.currentTime + 1.0);
 }
 
-export default function ResumeModal({ onClose, onDownload, imageSrc }) {
-  const [downloaded, setDownloaded] = useState(false);
-  const btnRef = useRef(null);
+function celebrate(el) {
+  playDing();
+  const rect = el.getBoundingClientRect();
+  confetti({
+    particleCount: 80,
+    spread: 70,
+    origin: {
+      x: (rect.left + rect.width / 2) / window.innerWidth,
+      y: (rect.top + rect.height / 2) / window.innerHeight,
+    },
+    colors: ["#fbbf24", "#4ade80", "#ffffff"],
+    zIndex: 10000,
+  });
+}
+
+export default function ResumeModal({ onClose, onDownload, onDownloadPdf, imageSrc }) {
+  const [pngDone, setPngDone] = useState(false);
+  const [pdfDone, setPdfDone] = useState(false);
+  const pngBtnRef = useRef(null);
+  const pdfBtnRef = useRef(null);
 
   const handleDownload = async () => {
-    if (downloaded) return;
+    if (pngDone) return;
     await onDownload();
-    setDownloaded(true);
-    playDing();
-
-    const rect = btnRef.current.getBoundingClientRect();
-    const x = (rect.left + rect.width / 2) / window.innerWidth;
-    const y = (rect.top + rect.height / 2) / window.innerHeight;
-    confetti({
-      particleCount: 80,
-      spread: 70,
-      origin: { x, y },
-      colors: ["#fbbf24", "#4ade80", "#ffffff"],
-      zIndex: 10000,
-    });
-
+    setPngDone(true);
+    celebrate(pngBtnRef.current);
     setTimeout(onClose, 900);
+  };
+
+  // The print dialog never reports whether the user actually saved, so the
+  // label says "Opened" rather than claiming a download happened. The modal
+  // stays open so a cancelled print can be retried.
+  const handleDownloadPdf = async () => {
+    await onDownloadPdf();
+    setPdfDone(true);
+    celebrate(pdfBtnRef.current);
   };
   return (
     <motion.div
@@ -108,18 +122,26 @@ export default function ResumeModal({ onClose, onDownload, imageSrc }) {
               img.style.height = "auto";
               doc.body.appendChild(img);
             }}
-            className="flex-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-[10px] border border-white/[0.08] text-white/55 text-[13px] font-medium transition-all hover:bg-white/10 hover:text-white/70 cursor-pointer"
+            className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-[10px] border border-white/[0.08] text-white/55 text-[13px] font-medium transition-all hover:bg-white/10 hover:text-white/70 cursor-pointer"
             style={{ background: "rgba(255,255,255,0.06)" }}
           >
-            Enlarge Image
+            Enlarge
           </button>
           <button
-            ref={btnRef}
+            ref={pngBtnRef}
             onClick={handleDownload}
-            className={`flex-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-[10px] text-gray-950 text-[13px] font-semibold transition-all duration-300 cursor-pointer ${downloaded ? "bg-green-400" : "bg-amber-400 hover:brightness-110"}`}
-            style={{ boxShadow: downloaded ? "0 2px 12px rgba(74,222,128,0.3)" : "0 2px 12px rgba(251,191,35,0.2)" }}
+            className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-[10px] border border-white/[0.08] text-[13px] font-medium transition-all cursor-pointer ${pngDone ? "text-green-400" : "text-white/55 hover:bg-white/10 hover:text-white/70"}`}
+            style={{ background: "rgba(255,255,255,0.06)" }}
           >
-            {downloaded ? "✓ Downloaded" : "Confirm Download"}
+            {pngDone ? "✓ PNG" : "PNG"}
+          </button>
+          <button
+            ref={pdfBtnRef}
+            onClick={handleDownloadPdf}
+            className={`flex-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-[10px] text-gray-950 text-[13px] font-semibold transition-all duration-300 cursor-pointer ${pdfDone ? "bg-green-400" : "bg-amber-400 hover:brightness-110"}`}
+            style={{ boxShadow: pdfDone ? "0 2px 12px rgba(74,222,128,0.3)" : "0 2px 12px rgba(251,191,35,0.2)" }}
+          >
+            {pdfDone ? "✓ Opened Print Dialog" : "Download PDF"}
           </button>
         </div>
       </motion.div>

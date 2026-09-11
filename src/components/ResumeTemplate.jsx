@@ -1,216 +1,279 @@
-import { forwardRef } from "react";
-import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
+import { forwardRef, useEffect, useRef } from "react";
 import resumeData from "../data/resumeData";
+
+// US Letter at 96 DPI. The page is a fixed box so html2canvas and the print
+// iframe both produce exactly one 8.5x11 page.
+const PAGE_WIDTH = 816;
+const PAGE_HEIGHT = 1056;
+const PAGE_MARGIN = 48; // 0.5 inch
+
+// Must be a system stack — the print iframe has no access to the parent
+// document's @font-face rules, so a webfont would silently fall back there.
+const FONT_STACK = "Arial, Helvetica, sans-serif";
+const BODY_SIZE = "10.5px";
+const LINE_HEIGHT = 1.32;
 
 const ResumeTemplate = forwardRef(function ResumeTemplate(_, ref) {
   const d = resumeData;
+  const contentRef = useRef(null);
+
+  // Two things that fail silently otherwise: the page clips anything past
+  // 1056px (a whole section can vanish from the PDF), and unfilled [X]
+  // placeholders would publish to the live About page as-is.
+  useEffect(() => {
+    const height = contentRef.current?.scrollHeight ?? 0;
+    if (height > PAGE_HEIGHT) {
+      console.warn(
+        `[ResumeTemplate] Content is ${height}px tall but the page is ${PAGE_HEIGHT}px. ` +
+          `${height - PAGE_HEIGHT}px will be clipped — trim resumeData.js (drop the summary, ` +
+          `a project, or a bullet) until this warning goes away.`
+      );
+    }
+
+    const placeholders = (JSON.stringify(d).match(/\[[A-Z][A-Z\s–-]*\]/g) ?? []).length;
+    if (placeholders > 0) {
+      console.warn(
+        `[ResumeTemplate] ${placeholders} unfilled placeholder(s) in resumeData.js ` +
+          `(e.g. [X], [GPA], [PHONE]). Fill these in before applying anywhere or deploying.`
+      );
+    }
+  }, [d]);
+
+  const contactParts = [
+    d.contact.location,
+    d.contact.phone,
+    d.contact.email,
+  ].filter(Boolean);
 
   return (
     <div
       ref={ref}
       style={{
-        width: "816px",
-        height: "1056px",
-        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+        width: `${PAGE_WIDTH}px`,
+        height: `${PAGE_HEIGHT}px`,
+        fontFamily: FONT_STACK,
         backgroundColor: "#fff",
-        color: "#222",
-        display: "flex",
-        flexDirection: "column",
+        color: "#000",
         overflow: "hidden",
       }}
     >
-      {/* Header */}
       <div
+        ref={contentRef}
         style={{
-          textAlign: "center",
-          padding: "32px 24px 20px",
-          borderBottom: "2px solid #333",
+          padding: `${PAGE_MARGIN}px`,
+          fontSize: BODY_SIZE,
+          lineHeight: LINE_HEIGHT,
         }}
       >
-        <h1
-          style={{
-            fontSize: "32px",
-            fontWeight: 700,
-            letterSpacing: "4px",
-            margin: 0,
-            textTransform: "uppercase",
-          }}
-        >
-          {d.name}
-        </h1>
-        <p
-          style={{
-            fontSize: "12px",
-            letterSpacing: "2px",
-            margin: "6px 0 2px",
-            textTransform: "uppercase",
-            color: "#555",
-          }}
-        >
-          {d.tagline}
-        </p>
-        <p
-          style={{
-            fontSize: "12px",
-            letterSpacing: "2px",
-            margin: 0,
-            textTransform: "uppercase",
-            color: "#555",
-          }}
-        >
-          {d.subtitle}
-        </p>
-      </div>
-
-      {/* Body */}
-      <div style={{ display: "flex", flex: 1 }}>
-        {/* Left Column */}
-        <div
-          style={{
-            width: "280px",
-            backgroundColor: "#2d2d2d",
-            color: "#e0e0e0",
-            padding: "20px 18px",
-            fontSize: "11px",
-            lineHeight: 1.5,
-          }}
-        >
-          {/* Contact */}
-          <SectionTitle light>Contact</SectionTitle>
-          <div style={{ marginBottom: "16px" }}>
-            <ContactLine icon={<FaEnvelope size={13} style={{ display: "inline", verticalAlign: "middle" }} />} text={d.contact.email} />
-            <ContactLine icon={<FaGithub size={13} style={{ display: "inline", verticalAlign: "middle" }} />} text={d.contact.github} />
-            <ContactLine icon={<FaLinkedin size={13} style={{ display: "inline", verticalAlign: "middle" }} />} text={d.contact.linkedin} />
-          </div>
-
-          {/* Education */}
-          <SectionTitle light>Education</SectionTitle>
-          {d.education.map((edu, i) => (
-            <div key={i} style={{ marginBottom: "14px" }}>
-              <p style={{ fontWeight: 700, color: "#ccc", margin: "0 0 2px" }}>
-                {edu.years}
-              </p>
-              <p
-                style={{
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  fontSize: "11px",
-                  margin: "0 0 2px",
-                }}
-              >
-                {edu.school}
-              </p>
-              {edu.details.map((det, j) => (
-                <p key={j} style={{ margin: "0 0 2px", color: "#ccc" }}>
-                  {det}
-                </p>
-              ))}
-              <p style={{ margin: "4px 0 2px", color: "#aaa" }}>
-                {edu.coursesLabel}
-              </p>
-              <ul style={{ margin: 0, paddingLeft: "14px", color: "#ccc" }}>
-                {edu.courses.map((c, k) => (
-                  <li key={k}>{c}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-
-          {/* Skills */}
-          <SectionTitle light>Skills</SectionTitle>
-          <ul style={{ margin: "0 0 16px", paddingLeft: "14px", color: "#ccc" }}>
-            {d.skills.map((skill) => (
-              <li key={skill}>{skill}</li>
+        {/* Header */}
+        <header style={{ textAlign: "center", marginBottom: "10px" }}>
+          <h1
+            style={{
+              fontSize: "26px",
+              fontWeight: 700,
+              letterSpacing: "1.5px",
+              textTransform: "uppercase",
+              margin: "0 0 6px",
+            }}
+          >
+            {d.name}
+          </h1>
+          <p style={{ fontSize: "10px", margin: 0 }}>
+            {contactParts.join("  •  ")}
+          </p>
+          <p style={{ fontSize: "10px", margin: "2px 0 0" }}>
+            {d.contact.links.map((link, i) => (
+              <span key={link.href}>
+                {i > 0 && "  •  "}
+                <PlainLink href={link.href}>{link.label}</PlainLink>
+              </span>
             ))}
-          </ul>
+          </p>
+        </header>
 
-          {/* Portfolio */}
-          <SectionTitle light small>Portfolio – ryansinha.dev</SectionTitle>
-          <ul style={{ margin: 0, paddingLeft: "14px", color: "#ccc" }}>
-            {d.portfolio.bullets.map((b, i) => (
-              <li key={i} style={{ marginBottom: "3px" }}>
-                {b}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* Summary — optional, renders only when written */}
+        {d.summary && (
+          <Section title="Summary">
+            <p style={{ margin: 0 }}>{d.summary}</p>
+          </Section>
+        )}
 
-        {/* Right Column */}
-        <div style={{ flex: 1, padding: "20px 24px", fontSize: "11px", lineHeight: 1.55 }}>
-          <SectionTitle>Work Experience</SectionTitle>
-          {d.experience.map((exp, i) => (
-            <div key={i} style={{ marginBottom: "16px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "baseline",
-                }}
-              >
-                <h3
-                  style={{
-                    fontSize: "13px",
-                    fontWeight: 700,
-                    margin: 0,
-                  }}
-                >
-                  {exp.company}
-                </h3>
-                <span style={{ fontSize: "10px", color: "#666", whiteSpace: "nowrap" }}>
-                  {exp.dates}
-                </span>
-              </div>
-              <p
-                style={{
-                  fontStyle: "italic",
-                  color: "#555",
-                  margin: "2px 0 4px",
-                }}
-              >
-                {exp.role}
-              </p>
-              <ul style={{ margin: 0, paddingLeft: "16px", color: "#333" }}>
-                {exp.bullets.map((b, j) => (
-                  <li key={j} style={{ marginBottom: "3px" }}>
-                    {b}
-                  </li>
-                ))}
-              </ul>
-            </div>
+        {/* Education */}
+        <Section title="Education">
+          {d.education.map((edu) => (
+            <Entry
+              key={edu.school}
+              title={edu.school}
+              titleRight={edu.location}
+              subtitle={edu.degree}
+              subtitleRight={edu.gradDate}
+            >
+              {edu.concentration && <Detail>{edu.concentration}</Detail>}
+              {edu.gpa && <Detail>{edu.gpa}</Detail>}
+              {edu.coursework?.length > 0 && (
+                <Detail>
+                  <strong>Relevant Coursework:</strong> {edu.coursework.join(", ")}
+                </Detail>
+              )}
+              {edu.honors?.length > 0 && (
+                <Detail>
+                  <strong>Honors:</strong> {edu.honors.join(", ")}
+                </Detail>
+              )}
+            </Entry>
           ))}
-        </div>
+        </Section>
+
+        {/* Projects */}
+        <Section title="Projects">
+          {d.projects.map((proj) => (
+            <Entry
+              key={proj.name}
+              title={
+                <>
+                  {proj.name}
+                  {proj.link && (
+                    <span style={{ fontWeight: 400 }}>
+                      {"  |  "}
+                      <PlainLink href={proj.link.href}>{proj.link.label}</PlainLink>
+                    </span>
+                  )}
+                </>
+              }
+              titleRight={proj.dates}
+              subtitle={proj.tech}
+            >
+              <Bullets items={proj.bullets} />
+            </Entry>
+          ))}
+        </Section>
+
+        {/* Experience */}
+        <Section title="Experience">
+          {d.experience.map((exp) => (
+            <Entry
+              key={exp.company}
+              title={exp.company}
+              titleRight={exp.location}
+              subtitle={exp.title}
+              subtitleRight={exp.dates}
+            >
+              <Bullets items={exp.bullets} />
+            </Entry>
+          ))}
+        </Section>
+
+        {/* Leadership & Activities */}
+        <Section title="Leadership & Activities">
+          {d.leadership.map((act) => (
+            <Entry
+              key={act.organization}
+              title={act.organization}
+              titleRight={act.location}
+              subtitle={act.role}
+              subtitleRight={act.dates}
+            >
+              <Bullets items={act.bullets} />
+            </Entry>
+          ))}
+        </Section>
+
+        {/* Skills */}
+        <Section title="Skills" last>
+          {d.skills.map((group) => (
+            <Detail key={group.category}>
+              <strong>{group.category}:</strong> {group.items.join(", ")}
+            </Detail>
+          ))}
+        </Section>
       </div>
     </div>
   );
 });
 
-function SectionTitle({ children, light, small }) {
+function Section({ title, children, last }) {
   return (
-    <h2
-      style={{
-        fontSize: small ? "11px" : "14px",
-        fontWeight: 700,
-        textTransform: "uppercase",
-        letterSpacing: small ? "1px" : "1.5px",
-        borderBottom: light ? "1px solid #666" : "1px solid #333",
-        paddingBottom: "4px",
-        marginBottom: "10px",
-        marginTop: "0",
-        color: light ? "#fff" : "#222",
-        whiteSpace: small ? "nowrap" : undefined,
-      }}
-    >
+    <section style={{ marginBottom: last ? 0 : "9px" }}>
+      <h2
+        style={{
+          fontSize: "11.5px",
+          fontWeight: 700,
+          textTransform: "uppercase",
+          letterSpacing: "1px",
+          borderBottom: "1px solid #000",
+          padding: "0 0 2px",
+          margin: "0 0 5px",
+        }}
+      >
+        {title}
+      </h2>
       {children}
-    </h2>
+    </section>
   );
 }
 
-function ContactLine({ icon, text }) {
+// The four-corner header every Harvard entry shares: name/location on the
+// first line, role/dates on the second.
+function Entry({ title, titleRight, subtitle, subtitleRight, children }) {
   return (
-    <p style={{ margin: "0 0 6px", fontSize: "11px", lineHeight: "13px" }}>
-      {icon}
-      <span style={{ verticalAlign: "middle", marginLeft: "8px", position: "relative", top: "-5px" }}>{text}</span>
-    </p>
+    <div style={{ marginBottom: "6px" }}>
+      <EntryLine left={title} right={titleRight} bold />
+      {(subtitle || subtitleRight) && (
+        <EntryLine left={subtitle} right={subtitleRight} italic />
+      )}
+      {children}
+    </div>
+  );
+}
+
+function EntryLine({ left, right, bold, italic }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "baseline",
+        gap: "12px",
+      }}
+    >
+      <span style={{ fontWeight: bold ? 700 : 400, fontStyle: italic ? "italic" : "normal" }}>
+        {left}
+      </span>
+      <span style={{ whiteSpace: "nowrap", fontStyle: italic ? "italic" : "normal" }}>
+        {right}
+      </span>
+    </div>
+  );
+}
+
+function Detail({ children }) {
+  return <p style={{ margin: 0 }}>{children}</p>;
+}
+
+// The list marker is drawn as a real character instead of via list-style,
+// because the three render paths disagree about native markers: Tailwind's
+// preflight strips them on the page, html2canvas misplaces them in the PNG,
+// and the print iframe draws them normally. A literal bullet looks the same
+// in all three.
+function Bullets({ items }) {
+  return (
+    <ul style={{ margin: "1px 0 0", padding: 0, listStyle: "none" }}>
+      {items.map((item, i) => (
+        <li key={i} style={{ display: "flex", gap: "6px", marginBottom: "1px" }}>
+          <span aria-hidden="true">•</span>
+          <span style={{ flex: 1 }}>{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// Anchors stay clickable in the exported PDF but read as plain black text.
+function PlainLink({ href, children }) {
+  return (
+    <a href={href} style={{ color: "inherit", textDecoration: "none" }}>
+      {children}
+    </a>
   );
 }
 
