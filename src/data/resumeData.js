@@ -69,13 +69,14 @@ const resumeData = {
       ],
     },
     {
-      name: "NBA Season Simulator",
-      link: { label: "github.com/RyanS2025/NBA-Season-Simulation", href: "https://github.com/RyanS2025/NBA-Season-Simulation" },
-      tech: "Python, Flask, nba_api",
-      dates: "September 2025",
+      name: "BBAL Sim",
+      link: { label: "github.com/RyanS2025/RSinhaBBALSim", href: "https://github.com/RyanS2025/RSinhaBBALSim" },
+      tech: "React, TypeScript, Tailwind CSS, Dexie.js, Vite",
+      dates: "September 2025 – Present",
       bullets: [
-        "Wrote a simulation engine that models individual player performance to project box scores for single games or full 82-game seasons.",
-        "Integrated the nba_api library to pull real player statistics as simulation inputs, exposed through a Flask interface with a searchable player lookup.",
+        "Built a full basketball GM simulator running entirely client-side, with skill-based game simulation driven by individual matchups rather than overall ratings.",
+        "Engineered a self-sustaining 30-team CPU league with an 82-game schedule, play-in tournament, best-of-seven playoffs, draft lottery, and multi-season free agency.",
+        "Implemented a living locker-room system where morale reacts to wins, losses, and playing time — unhappy stars demand trades, go public, and hold out.",
       ],
     },
     {
@@ -152,7 +153,7 @@ const resumeData = {
   skills: [
     {
       category: "Languages",
-      items: ["Python", "Java", "JavaScript", "C++", "SQL", "HTML", "CSS"],
+      items: ["Python", "Java", "JavaScript", "TypeScript", "C++", "SQL", "HTML", "CSS"],
     },
     {
       category: "Frameworks & Libraries",
@@ -160,7 +161,7 @@ const resumeData = {
     },
     {
       category: "Tools & Platforms",
-      items: ["Git", "GitHub", "Supabase", "PostgreSQL", "Vite", "REST APIs", "GitHub Pages"],
+      items: ["Git", "GitHub", "Supabase", "PostgreSQL", "Vite", "IndexedDB", "REST APIs", "GitHub Pages"],
     },
   ],
 };

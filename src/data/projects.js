@@ -41,19 +41,19 @@ const projects = [
     domain: null,
     featured: true
   },
-  { // Basketball-Sim
+  { // BBAL Sim
     date: "2025-09-01",
-    slug: "basketball-simulation",
-    title: "NBA Season Simulator",
-    description: "Inspired by NBA 2K's MyLeague, a basketball simulation platform that allows users to simulate player stats for single games or full seasons, and search for real NBA player statistics. Features a web interface built with Flask, and custom simulation logic for basketball performance.",
-    tags: ["Python", "Flask", "Simulation", "nba_api"],
+    slug: "bbal-sim",
+    title: "BBAL Sim",
+    description: "A deep basketball general-manager simulator that runs entirely in the browser. Take over a franchise, build through the draft or trade for stars, manage egos and injuries, and chase championships — featuring skill-based simulation, a living locker room with morale and holdouts, 100-voter media awards, and full league history. No servers; every league lives in IndexedDB.",
+    tags: ["React", "TypeScript", "Tailwind CSS", "Dexie.js", "Vite"],
     images: [
     "/images/NBASim/NBASimLogo.png",
     "/images/NBASim/NBASimMain.png",
     "/images/NBASim/NBASimAPI.png",
     ],
-    link: "https://github.com/RyanS2025/NBA-Season-Simulation",
-    domain: "https://basketball-season-simulation.vercel.app/",
+    link: "https://github.com/RyanS2025/RSinhaBBALSim",
+    domain: null,
     featured: true
   },
   { // Backyard
