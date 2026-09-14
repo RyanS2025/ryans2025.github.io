@@ -5,13 +5,18 @@ import resumeData from "../data/resumeData";
 // iframe both produce exactly one 8.5x11 page.
 const PAGE_WIDTH = 816;
 const PAGE_HEIGHT = 1056;
-const PAGE_MARGIN = 48; // 0.5 inch
+const PAGE_MARGIN = 40; // 0.42 inch — tightened from 0.5" to buy a 9pt body
 
 // Must be a system stack — the print iframe has no access to the parent
 // document's @font-face rules, so a webfont would silently fall back there.
 const FONT_STACK = "Arial, Helvetica, sans-serif";
-const BODY_SIZE = "10.5px";
-const LINE_HEIGHT = 1.28;
+// CSS px x 0.75 = points at 96 DPI, so these map to real type sizes:
+// 12px = 9pt body, 13px = 9.75pt section headings. Career offices treat
+// 10pt as the floor, but 10pt here would force cutting roughly a third of
+// the content; 9pt is the largest size that keeps it all on one page.
+const BODY_SIZE = "12px";
+const LINE_HEIGHT = 1.15;
+const HEADING_SIZE = "13px";
 
 const ResumeTemplate = forwardRef(function ResumeTemplate(_, ref) {
   const d = resumeData;
@@ -78,10 +83,10 @@ const ResumeTemplate = forwardRef(function ResumeTemplate(_, ref) {
           >
             {d.name}
           </h1>
-          <p style={{ fontSize: "10px", margin: 0 }}>
+          <p style={{ fontSize: "11px", margin: 0 }}>
             {contactParts.join("  •  ")}
           </p>
-          <p style={{ fontSize: "10px", margin: "2px 0 0" }}>
+          <p style={{ fontSize: "11px", margin: "2px 0 0" }}>
             {d.contact.links.map((link, i) => (
               <span key={link.href}>
                 {i > 0 && "  •  "}
@@ -89,6 +94,11 @@ const ResumeTemplate = forwardRef(function ResumeTemplate(_, ref) {
               </span>
             ))}
           </p>
+          {d.contact.availability && (
+            <p style={{ fontSize: "11px", fontWeight: 700, margin: "3px 0 0" }}>
+              Available for Co-op: {d.contact.availability}
+            </p>
+          )}
         </header>
 
         {/* Summary — optional, renders only when written */}
@@ -108,6 +118,7 @@ const ResumeTemplate = forwardRef(function ResumeTemplate(_, ref) {
               subtitle={edu.degree}
               subtitleRight={edu.gradDate}
             >
+              {edu.major && <Detail>{edu.major}</Detail>}
               {edu.concentration && <Detail>{edu.concentration}</Detail>}
               {edu.gpa && <Detail>{edu.gpa}</Detail>}
               {edu.coursework?.length > 0 && (
@@ -124,44 +135,40 @@ const ResumeTemplate = forwardRef(function ResumeTemplate(_, ref) {
           ))}
         </Section>
 
+        {/* Skills sits directly after Education per the Khoury co-op
+            resume checklist, so the keyword block is read before the work. */}
+        <Section title="Skills">
+          {d.skills.map((group) => (
+            <Detail key={group.category}>
+              <strong>{group.category}:</strong> {group.items.join(", ")}
+            </Detail>
+          ))}
+        </Section>
+
         {/* Projects */}
         <Section title="Projects">
           {d.projects.map((proj) => (
             <Entry
               key={proj.name}
+              // Header reads: Name | Role | URL ......... Dates
               title={
                 <>
                   {proj.name}
-                  {proj.link && (
-                    <span style={{ fontWeight: 400 }}>
-                      {"  |  "}
-                      <PlainLink href={proj.link.href}>{proj.link.label}</PlainLink>
-                    </span>
-                  )}
+                  <span style={{ fontWeight: 400 }}>
+                    {proj.role && `  |  ${proj.role}`}
+                    {proj.link && (
+                      <>
+                        {"  |  "}
+                        <PlainLink href={proj.link.href}>{proj.link.label}</PlainLink>
+                      </>
+                    )}
+                  </span>
                 </>
               }
               titleRight={proj.dates}
               subtitle={proj.tech}
             >
               <Bullets items={proj.bullets} />
-            </Entry>
-          ))}
-        </Section>
-
-        {/* Leadership & Activities sits above Experience: the Harvard
-            template advises promoting it when the activities are more
-            relevant to the role, and leading a dev team beats food service
-            for a software co-op. */}
-        <Section title="Leadership & Activities">
-          {d.leadership.map((act) => (
-            <Entry
-              key={act.organization}
-              title={act.organization}
-              titleRight={act.location}
-              subtitle={act.role}
-              subtitleRight={act.dates}
-            >
-              <Bullets items={act.bullets} />
             </Entry>
           ))}
         </Section>
@@ -181,14 +188,27 @@ const ResumeTemplate = forwardRef(function ResumeTemplate(_, ref) {
           ))}
         </Section>
 
-        {/* Skills */}
-        <Section title="Skills" last>
-          {d.skills.map((group) => (
-            <Detail key={group.category}>
-              <strong>{group.category}:</strong> {group.items.join(", ")}
-            </Detail>
+        {/* Leadership & Activities */}
+        <Section title="Leadership & Activities" last={!d.interests}>
+          {d.leadership.map((act) => (
+            <Entry
+              key={act.organization}
+              title={act.organization}
+              titleRight={act.location}
+              subtitle={act.role}
+              subtitleRight={act.dates}
+            >
+              <Bullets items={act.bullets} />
+            </Entry>
           ))}
         </Section>
+
+        {/* Interests — renders only when written */}
+        {d.interests && (
+          <Section title="Interests" last>
+            <p style={{ margin: 0 }}>{d.interests}</p>
+          </Section>
+        )}
       </div>
     </div>
   );
@@ -196,10 +216,10 @@ const ResumeTemplate = forwardRef(function ResumeTemplate(_, ref) {
 
 function Section({ title, children, last }) {
   return (
-    <section style={{ marginBottom: last ? 0 : "9px" }}>
+    <section style={{ marginBottom: last ? 0 : "6px" }}>
       <h2
         style={{
-          fontSize: "11.5px",
+          fontSize: HEADING_SIZE,
           fontWeight: 700,
           textTransform: "uppercase",
           letterSpacing: "1px",
@@ -212,7 +232,7 @@ function Section({ title, children, last }) {
       {/* The rule is its own block rather than a border-bottom on the h2:
           html2canvas positions a border tight against the glyphs instead of
           below the line box, so in the PNG it cut through the text. */}
-      <div style={{ height: "1px", backgroundColor: "#000", margin: "6px 0 4px" }} />
+      <div style={{ height: "1px", backgroundColor: "#000", margin: "7px 0 2px" }} />
       {children}
     </section>
   );
@@ -222,7 +242,7 @@ function Section({ title, children, last }) {
 // first line, role/dates on the second.
 function Entry({ title, titleRight, subtitle, subtitleRight, children }) {
   return (
-    <div style={{ marginBottom: "6px" }}>
+    <div style={{ marginBottom: "5px" }}>
       <EntryLine left={title} right={titleRight} bold />
       {(subtitle || subtitleRight) && (
         <EntryLine left={subtitle} right={subtitleRight} italic />
