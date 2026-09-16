@@ -3,6 +3,7 @@ import { AnimatePresence } from "framer-motion";
 import html2canvas from "html2canvas";
 import StarField from "../components/StarField";
 import ResumeTemplate from "../components/ResumeTemplate";
+import { stripEmphasis } from "../utils/emphasis";
 import ResumeModal from "../components/ResumeModal";
 import resumeData from "../data/resumeData";
 import { printResumeNode } from "../utils/printResume";
@@ -40,28 +41,23 @@ export default function About() {
   const skills = resumeData.skills.flatMap((group) => group.items);
 
   const education = resumeData.education.map((edu) => ({
-    year: edu.gradDate,
+    year: edu.dates,
     school: edu.school,
     degree: edu.degree,
     note: `Courses: ${edu.coursework.join(", ")}`,
   }));
 
-  // Leadership leads, matching the resume's section order — the Oasis roles
-  // say more than the food-service jobs.
-  const experience = [
-    ...resumeData.leadership.map((act) => ({
-      dates: act.dates,
-      role: act.role,
-      org: act.organization,
-      note: act.bullets[0],
-    })),
-    ...resumeData.experience.map((exp) => ({
-      dates: exp.dates,
-      role: exp.title,
-      org: exp.company,
-      note: exp.bullets[0],
-    })),
-  ];
+  // One list now. The resume no longer has a separate Leadership & Activities
+  // section — Oasis and the Diwali Festival sit in `experience` alongside the
+  // paid jobs, already ordered by start date, so this just mirrors it.
+  const experience = resumeData.experience.map((exp) => ({
+    dates: exp.dates,
+    role: exp.title,
+    org: exp.company,
+    // Bullets carry **emphasis** markers for the PDF; this page renders
+    // them as plain text, so the markers have to come off.
+    note: stripEmphasis(exp.bullets[0]),
+  }));
 
   return (
     <>
