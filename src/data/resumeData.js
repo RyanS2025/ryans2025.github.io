@@ -76,10 +76,10 @@ const resumeData = {
       dates: "February 2026 – Present",
       bullets: [
         "Operate a live campus lost-and-found with **130+ users** across web and iOS, five months in production.",
-        "Screen photo uploads via a two-stage Cloud Vision pipeline rejecting IDs and cards by Luhn and MRZ checks.",
+        "Screen photo uploads via a **two-stage Cloud Vision pipeline** rejecting IDs and cards by Luhn and MRZ checks.",
         "Partnered with **Northeastern's Curry Student Center** to route handovers through their desk, enforced server-side.",
         "Built **76 REST endpoints** over 21 Postgres tables behind two-factor auth, passkeys, and moderator guards.",
-        "Deployed to Railway via gated GitHub Actions, covered by 116 unit tests and 8 Playwright end-to-end specs.",
+        "Deployed to Railway via gated GitHub Actions, covered by **116 unit tests** and 8 Playwright end-to-end specs.",
       ],
     },
     {
@@ -91,7 +91,7 @@ const resumeData = {
       bullets: [
         "Overhauled a stalled club-discovery platform, introducing sprint planning and code review for a **core team of 5**.",
         "Closed **four world-writable Postgres RLS policies** exposing user emails and allowing anonymous profile writes.",
-        "Eliminated direct database access from the browser, routing all mutations through a JWT-verified Express API.",
+        "Eliminated direct database access from the browser, routing all mutations through a **JWT-verified Express API**.",
         "Built the club onboarding wizard now used by **15 clubs**, with hashed invite tokens and atomic redemption.",
       ],
     },
@@ -111,7 +111,7 @@ const resumeData = {
       //   git log origin/HEAD --reverse --format='%ad' --date=short | head -1
       dates: "October 2025 – Present",
       bullets: [
-        "Engineered a sim resolving games from player matchups across 29 skills and 22 tendencies, not overall rating.",
+        "Engineered a sim resolving games from player matchups across **29 skills and 22 tendencies**, not overall rating.",
         "Modeled **10 personality traits** that move morale, chemistry, and shooting, escalating demands into holdouts.",
         "Simulated awards via a **100-writer press corps** with beat and market bias, so media personality moves ballots.",
         "Rebuilt a Python simulator in TypeScript, simulating a full **1,230-game season in 10 seconds** off the main thread.",
@@ -129,7 +129,7 @@ const resumeData = {
       dates: "September 2026 – December 2026",
       bullets: [
         "Lead two Accelerator teams of **16–18 developers** total, running sprint planning, code review, and task assignment.",
-        "Mentor first-year students building their first computer science project, from environment setup to a working app.",
+        "Mentor **first-year students** building their first computer science project, from environment setup to a working app.",
       ],
     },
     {
@@ -160,7 +160,7 @@ const resumeData = {
       dates: "October 2022 – October 2025",
       bullets: [
         "Co-founded and organized West Orange's annual Diwali Festival, growing it to **200+ attendees** across four years.",
-        "Wrote and emceed the live program with a team of 5–6, recruiting 20+ local businesses and performers.",
+        "Wrote and emceed the live program with a team of 5–6, recruiting **20+ local businesses** and performers.",
       ],
     },
   ],
