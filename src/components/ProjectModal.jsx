@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 // Scale + Fade transition (Apple-style)
@@ -117,15 +118,26 @@ export default function ProjectModal({ project, onClose }) {
 
                 {/* Actions */}
                 <div className="flex gap-2">
-                    <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-[10px] bg-amber-400 text-gray-950 text-[13px] font-semibold transition-all hover:brightness-110"
-                        style={{ boxShadow: "0 2px 12px rgba(251,191,35,0.2)" }}
-                    >
-                        View on GitHub
-                    </a>
+                    {project.link ? (
+                        <a
+                            href={project.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-[10px] bg-amber-400 text-gray-950 text-[13px] font-semibold transition-all hover:brightness-110"
+                            style={{ boxShadow: "0 2px 12px rgba(251,191,35,0.2)" }}
+                        >
+                            View on GitHub
+                        </a>
+                    ) : (
+                        <Link
+                            to="/contact"
+                            onClick={onClose}
+                            className="flex-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-[10px] bg-amber-400 text-gray-950 text-[13px] font-semibold transition-all hover:brightness-110"
+                            style={{ boxShadow: "0 2px 12px rgba(251,191,35,0.2)" }}
+                        >
+                            Request GitHub Access
+                        </Link>
+                    )}
                     {project.domain && (
                         <a
                             href={project.domain}
