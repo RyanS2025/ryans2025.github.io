@@ -1,39 +1,32 @@
-import { useRef, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
-import html2canvas from "html2canvas";
 import StarField from "../components/StarField";
-import ResumeTemplate from "../components/ResumeTemplate";
 import { stripEmphasis } from "../utils/emphasis";
 import ResumeModal from "../components/ResumeModal";
 import resumeData from "../data/resumeData";
-import { printResumeNode } from "../utils/printResume";
+
+const RESUME_PDF = "/RyanSinha_Resume.pdf";
+const RESUME_PNG = "/RyanSinha_Resume.png";
 
 export default function About() {
-  const resumeRef = useRef(null);
   const [showResumeModal, setShowResumeModal] = useState(false);
-  const [resumeImage, setResumeImage] = useState(null);
 
-  const openResumeModal = useCallback(async () => {
-    if (!resumeRef.current) return;
-    const canvas = await html2canvas(resumeRef.current, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-    });
-    setResumeImage(canvas.toDataURL("image/png"));
-    setShowResumeModal(true);
-  }, []);
+  // The resume is the hand-edited PDF in public/, plus a PNG rendered from it
+  // for the preview and PNG download. Replace both files together.
+  const openResumeModal = useCallback(() => setShowResumeModal(true), []);
 
-  const downloadResume = useCallback(async () => {
-    if (!resumeImage) return;
+  const downloadResume = useCallback(() => {
     const link = document.createElement("a");
     link.download = "RyanSinha_Resume.png";
-    link.href = resumeImage;
+    link.href = RESUME_PNG;
     link.click();
-  }, [resumeImage]);
+  }, []);
 
   const downloadResumePdf = useCallback(() => {
-    printResumeNode(resumeRef.current, "Ryan_Sinha_Resume");
+    const link = document.createElement("a");
+    link.download = "RyanSinha_Resume.pdf";
+    link.href = RESUME_PDF;
+    link.click();
   }, []);
 
   // Everything below is derived from resumeData so the page and the PDF can't
@@ -153,22 +146,10 @@ export default function About() {
             onClose={() => setShowResumeModal(false)}
             onDownload={downloadResume}
             onDownloadPdf={downloadResumePdf}
-            imageSrc={resumeImage}
+            imageSrc={RESUME_PNG}
           />
         )}
       </AnimatePresence>
-
-      {/* Hidden resume for PNG capture */}
-      <div
-        style={{
-          position: "absolute",
-          left: "-9999px",
-          top: 0,
-        }}
-        aria-hidden="true"
-      >
-        <ResumeTemplate ref={resumeRef} />
-      </div>
     </>
   );
 }

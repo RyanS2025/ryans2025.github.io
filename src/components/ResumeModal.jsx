@@ -57,9 +57,7 @@ export default function ResumeModal({ onClose, onDownload, onDownloadPdf, imageS
     setTimeout(onClose, 900);
   };
 
-  // The print dialog never reports whether the user actually saved, so the
-  // label says "Opened" rather than claiming a download happened. The modal
-  // stays open so a cancelled print can be retried.
+  // The modal stays open after a PDF download so the PNG is still reachable.
   const handleDownloadPdf = async () => {
     await onDownloadPdf();
     setPdfDone(true);
@@ -141,7 +139,7 @@ export default function ResumeModal({ onClose, onDownload, onDownloadPdf, imageS
             className={`flex-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-[10px] text-gray-950 text-[13px] font-semibold transition-all duration-300 cursor-pointer ${pdfDone ? "bg-green-400" : "bg-amber-400 hover:brightness-110"}`}
             style={{ boxShadow: pdfDone ? "0 2px 12px rgba(74,222,128,0.3)" : "0 2px 12px rgba(251,191,35,0.2)" }}
           >
-            {pdfDone ? "✓ Opened Print Dialog" : "Download PDF"}
+            {pdfDone ? "✓ PDF Downloaded" : "Download PDF"}
           </button>
         </div>
       </motion.div>

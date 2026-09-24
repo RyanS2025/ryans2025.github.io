@@ -131,6 +131,7 @@ export default function ProjectModal({ project, onClose }) {
                     ) : (
                         <Link
                             to="/contact"
+                            state={{ message: `Hi Ryan, I'd like to request access to the ${project.title} GitHub repository. My GitHub username is: ` }}
                             onClick={onClose}
                             className="flex-1 flex items-center justify-center gap-2 px-5 py-2.5 rounded-[10px] bg-amber-400 text-gray-950 text-[13px] font-semibold transition-all hover:brightness-110"
                             style={{ boxShadow: "0 2px 12px rgba(251,191,35,0.2)" }}

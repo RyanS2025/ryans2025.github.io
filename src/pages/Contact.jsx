@@ -1,14 +1,19 @@
 import { useForm, ValidationError } from "@formspree/react";
 import { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import StarField from "../components/StarField";
 
 export default function Contact() {
   const formRef = useRef();
   const [state, handleSubmit] = useForm("meervdlq");
+  // Prefilled when arriving from a project's "Request GitHub Access" button.
+  const prefill = useLocation().state?.message ?? "";
 
   useEffect(() => {
     if (state.succeeded && formRef.current) {
       formRef.current.reset();
+      // reset() restores defaultValue, which would bring the prefill back.
+      formRef.current.elements.message.value = "";
     }
   }, [state.succeeded]);
 
@@ -56,6 +61,7 @@ export default function Contact() {
                 <label className="text-sm text-gray-400 mb-1 block">Message</label>
                 <textarea
                   name="message"
+                  defaultValue={prefill}
                   placeholder="Write your message here"
                   rows={5}
                   className="w-full p-3 rounded-lg bg-gray-900 border border-white/10 text-gray-100 placeholder-gray-500 outline-none focus:border-amber-400 transition-colors"

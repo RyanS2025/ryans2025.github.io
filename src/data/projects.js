@@ -53,7 +53,7 @@ const projects = [
     "/images/NBASim/NBASimAPI.png",
     ],
     link: "https://github.com/RyanS2025/Basketball-Season-Simulation",
-    domain: null,
+    domain: "https://basketball-season-simulation.vercel.app/",
     featured: true
   },
   { // Backyard
@@ -66,7 +66,7 @@ const projects = [
     images: [
       "/images/backyard/intro_screen_hero.gif",
     ],
-    link: "https://github.com/ConnorFriedman10/Backyard",
+    link: "https://github.com/RyanS2025/Backyard",
     domain: "https://explorethebackyard.com",
     featured: true,
     active: true
