@@ -5,7 +5,7 @@ import { stripEmphasis } from "../utils/emphasis";
 import ResumeModal from "../components/ResumeModal";
 import resumeData from "../data/resumeData";
 
-const RESUME_PDF = "/RyanSinha_Resume.pdf";
+const RESUME_PDF = "/RyanSinhaResume.pdf";
 const RESUME_PNG = "/RyanSinha_Resume.png";
 
 export default function About() {
@@ -24,7 +24,7 @@ export default function About() {
 
   const downloadResumePdf = useCallback(() => {
     const link = document.createElement("a");
-    link.download = "RyanSinha_Resume.pdf";
+    link.download = "RyanSinhaResume.pdf";
     link.href = RESUME_PDF;
     link.click();
   }, []);
@@ -147,6 +147,7 @@ export default function About() {
             onDownload={downloadResume}
             onDownloadPdf={downloadResumePdf}
             imageSrc={RESUME_PNG}
+            pdfSrc={RESUME_PDF}
           />
         )}
       </AnimatePresence>

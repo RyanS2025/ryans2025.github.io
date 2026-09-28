@@ -43,7 +43,7 @@ function celebrate(el) {
   });
 }
 
-export default function ResumeModal({ onClose, onDownload, onDownloadPdf, imageSrc }) {
+export default function ResumeModal({ onClose, onDownload, onDownloadPdf, imageSrc, pdfSrc }) {
   const [pngDone, setPngDone] = useState(false);
   const [pdfDone, setPdfDone] = useState(false);
   const pngBtnRef = useRef(null);
@@ -105,26 +105,16 @@ export default function ResumeModal({ onClose, onDownload, onDownloadPdf, imageS
 
         {/* Actions */}
         <div className="px-8 pt-4 pb-8 relative z-10 flex gap-2">
-          <button
-            onClick={() => {
-              const w = window.open("", "_blank");
-              const doc = w.document;
-              doc.title = "Resume";
-              doc.body.style.margin = "0";
-              doc.body.style.display = "flex";
-              doc.body.style.justifyContent = "center";
-              doc.body.style.background = "#111";
-              const img = doc.createElement("img");
-              img.src = imageSrc;
-              img.style.maxWidth = "100%";
-              img.style.height = "auto";
-              doc.body.appendChild(img);
-            }}
+          {/* A real link to the PDF, so the opened tab has a shareable URL. */}
+          <a
+            href={pdfSrc}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-[10px] border border-white/[0.08] text-white/55 text-[13px] font-medium transition-all hover:bg-white/10 hover:text-white/70 cursor-pointer"
             style={{ background: "rgba(255,255,255,0.06)" }}
           >
             Enlarge
-          </button>
+          </a>
           <button
             ref={pngBtnRef}
             onClick={handleDownload}
