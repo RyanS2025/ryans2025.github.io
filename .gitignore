@@ -25,3 +25,6 @@ dist-ssr
 
 # Brainstorming companion mockups
 .superpowers/
+
+# Playwright MCP captures and logs
+.playwright-mcp/

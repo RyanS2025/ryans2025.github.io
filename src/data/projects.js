@@ -51,9 +51,13 @@ const projects = [
     description: "A deep basketball general-manager simulator that runs entirely in the browser. Take over a franchise, build through the draft or trade for stars, manage egos and injuries, and chase championships — featuring skill-based simulation, a living locker room with morale and holdouts, 100-voter media awards, and full league history. No servers; every league lives in IndexedDB.",
     tags: ["React", "TypeScript", "Tailwind CSS", "Dexie.js", "Vite"],
     images: [
-    "/images/NBASim/NBASimLogo.png",
-    "/images/NBASim/NBASimMain.png",
-    "/images/NBASim/NBASimAPI.png",
+      "/images/NBASim/BBALSimHome.webp",
+      "/images/NBASim/BBALSimDashboard.webp",
+      "/images/NBASim/BBALSimRoster.webp",
+      "/images/NBASim/BBALSimPlayers.webp",
+      "/images/NBASim/BBALSimStandings.webp",
+      "/images/NBASim/BBALSimAwards.webp",
+      "/images/NBASim/BBALSimCoaching.webp",
     ],
     link: "https://github.com/RyanS2025/Basketball-Season-Simulation",
     domain: "https://basketball-season-simulation.vercel.app/",
@@ -62,12 +66,17 @@ const projects = [
   { // Backyard
     date: "2026-05-13",
     slug: "backyard",
+    coverPosition: "center", // 4:3 GIF in 16:9 cards: a top crop pushes the art high
     title: "Backyard",
     description:
       "A Ghibli-inspired campus platform for discovering clubs, reading peer reviews, tracking live events, and connecting with friends — the social layer your university never built.",
     tags: ["React", "Supabase", "Vite", "Tailwind"],
     images: [
       "/images/backyard/intro_screen_hero.gif",
+      "/images/backyard/BackyardClubs.webp",
+      "/images/backyard/BackyardSearch.webp",
+      "/images/backyard/BackyardCategories.webp",
+      "/images/backyard/BackyardClubPage.webp",
     ],
     link: "https://github.com/RyanS2025/Backyard",
     domain: "https://explorethebackyard.com",

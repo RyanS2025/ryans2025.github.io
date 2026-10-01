@@ -30,6 +30,10 @@ describe("projectDetails", () => {
     const p = { title: "X", description: "", images: ["/a/XLogo.png", "/a/shot.png"] };
     expect(projectDetails(p).cover).toBe("/a/shot.png");
   });
+  it("anchors covers to the top unless a project picks its own crop", () => {
+    expect(projectDetails(bySlug("lost-and-hound")).coverPosition).toBe("top");
+    expect(projectDetails(bySlug("backyard")).coverPosition).toBe("center");
+  });
   it("drops the descriptive prefix from BBAL Sim's tech line", () => {
     expect(projectDetails(bySlug("bbal-sim")).stack).toBe("TypeScript, React, Dexie.js (IndexedDB), Web Workers, Vite");
   });
@@ -40,7 +44,11 @@ describe("modalSections", () => {
     const ids = (s) => modalSections(projectDetails(bySlug(s))).map((x) => x.id);
     expect(ids("lost-and-hound")).toEqual(["overview", "highlights", "gallery", "stack", "links"]);
     expect(ids("wnba-reference")).toEqual(["overview", "gallery", "links"]);
-    expect(ids("backyard")).toEqual(["overview", "highlights", "stack", "links"]); // one image: no gallery
+    expect(ids("backyard")).toEqual(["overview", "highlights", "gallery", "stack", "links"]);
+  });
+  it("skips the gallery when the only image is already the hero", () => {
+    const d = projectDetails({ title: "X", description: "Solo.", images: ["/a/shot.png"], link: "https://x" });
+    expect(modalSections(d).map((x) => x.id)).not.toContain("gallery");
   });
 });
 
