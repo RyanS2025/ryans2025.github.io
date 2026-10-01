@@ -73,7 +73,7 @@ export default function Home() {
       <DeepFieldHero heroRef={heroRef} projects={featured} onOpen={open} onViewWork={viewWork} modalOpen={!!selected} />
 
       <section id="work" ref={workRef} className="max-w-6xl mx-auto px-7 pt-24 pb-24">
-        <h2 className="text-[38px] font-semibold tracking-tight text-ink mb-7">Featured work<span className="text-amber">.</span></h2>
+        <h2 className="text-[38px] font-semibold tracking-tight text-ink mb-7">Featured work</h2>
         <div ref={gridRef} className="grid md:grid-cols-2 gap-5.5">
           {featured.map((p, i) => <ProjectCard key={p.slug} project={p} index={i} onOpen={open} reveal />)}
         </div>
@@ -81,7 +81,7 @@ export default function Home() {
       </section>
 
       <section className="max-w-6xl mx-auto px-7 pb-28">
-        <h2 className="text-[38px] font-semibold tracking-tight text-ink mb-4">Featured posts<span className="text-amber">.</span></h2>
+        <h2 className="text-[38px] font-semibold tracking-tight text-ink mb-4">Featured posts</h2>
         <div className="border-t border-line">
           {featuredPosts.map((post) => (
             <Link

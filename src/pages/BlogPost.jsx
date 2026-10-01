@@ -17,7 +17,7 @@ export default function BlogPost() {
   return (
     <>
       <PageHero back={back} narrow>
-        <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-ink">{post.title}<span className="text-amber">.</span></h1>
+        <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-ink">{post.title}</h1>
         <p className="mt-3 font-mono text-xs text-mute">{post.date}</p>
       </PageHero>
 
