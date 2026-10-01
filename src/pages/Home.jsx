@@ -1,113 +1,96 @@
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, useReducedMotion } from "framer-motion";
 import projects from "../data/projects";
 import posts from "../data/posts";
+import DeepFieldHero from "../components/home/DeepFieldHero";
+import ProjectCard from "../components/ProjectCard";
 import ProjectModal from "../components/ProjectModal";
-import StarField from "../components/StarField";
+import { useAutopilot } from "../hooks/useAutopilot";
+import { projectDetails, sortProjects } from "../lib/projectDetails";
+import { autopilotDuration } from "../lib/flight";
 
 export default function Home() {
-  const [selected, setSelected] = useState(null);
+  const featured = useMemo(() => sortProjects(projects.filter((p) => p.featured)).map((p) => projectDetails(p)), []);
+  const featuredPosts = useMemo(() => posts.filter((p) => p.featured).sort((a, b) => b.date.localeCompare(a.date)), []);
+  const heroRef = useRef(null), workRef = useRef(null), gridRef = useRef(null);
+  const [selected, setSelected] = useState(null); // { project, el }
+  const [veil, setVeil] = useState(false);
+  const { flyTo } = useAutopilot();
+  const reduce = useReducedMotion();
+
+  const open = useCallback((project, el) => setSelected({ project, el }), []);
+
+  // Cards fade up the first time the grid scrolls into view.
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (reduce) { grid.dataset.in = ""; return; }
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) grid.dataset.in = ""; }, { threshold: 0.12 });
+    io.observe(grid);
+    return () => io.disconnect();
+  }, [reduce]);
+
+  // The jump from the end of the hero to the grid happens behind a fade, then
+  // the cards replay their entrance so the arrival reads as one motion.
+  const land = useCallback(() => {
+    setVeil(true);
+    setTimeout(() => {
+      const grid = gridRef.current;
+      delete grid.dataset.in;
+      window.scrollTo(0, workRef.current.offsetTop);
+      requestAnimationFrame(() => { grid.dataset.in = ""; setVeil(false); });
+    }, 360);
+  }, []);
+
+  const viewWork = useCallback(() => {
+    const hero = heroRef.current;
+    if (reduce) { window.scrollTo(0, workRef.current.offsetTop); return; }
+    const to = hero.offsetTop + hero.offsetHeight - window.innerHeight;
+    if (window.scrollY >= to) { land(); return; }
+    flyTo(to, autopilotDuration(to - window.scrollY, hero.offsetHeight - window.innerHeight), land);
+  }, [flyTo, land, reduce]);
+
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <img src="/images/HeroBackdrop.png" alt="" className="absolute inset-0 w-full h-full object-cover opacity-50" />
-        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-gray-950 to-transparent" />
-        <div className="max-w-5xl mx-auto px-6 pt-32 pb-48 text-center relative">
-          <p className="text-sm uppercase tracking-widest text-amber-400 mb-2">
-            Student Developer & Designer at Northeastern University
-          </p>
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            Hi, I'm <span className="text-amber-400">Ryan Sinha</span>.
-          </h1>
-          <p className="text-lg text-gray-400 mb-8 max-w-xl mx-auto">
-            I study Computer Science & Business Administration, lead developer teams through Oasis at Northeastern, and build projects that solve real problems.
-          </p>
-          <div className="flex gap-3 justify-center">
-            <Link to="/projects"
-              className="px-6 py-3 bg-amber-400 text-gray-950 rounded-full font-medium hover:bg-amber-300 transition-colors">
-              View projects
-            </Link>
-            <Link to="/about"
-              className="px-6 py-3 border border-white/10 rounded-full hover:border-white/30 transition-colors">
-              About me
-            </Link>
-          </div>
+      <DeepFieldHero heroRef={heroRef} projects={featured} onOpen={open} onViewWork={viewWork} modalOpen={!!selected} />
+
+      <section id="work" ref={workRef} className="max-w-6xl mx-auto px-7 pt-24 pb-24">
+        <h2 className="text-[38px] font-semibold tracking-tight text-ink mb-7">Featured work<span className="text-amber">.</span></h2>
+        <div ref={gridRef} className="grid md:grid-cols-2 gap-5.5">
+          {featured.map((p, i) => <ProjectCard key={p.slug} project={p} index={i} onOpen={open} reveal />)}
         </div>
+        <Link to="/projects" className="inline-block mt-6 text-sm text-amber hover:text-ink transition-colors">View all projects →</Link>
       </section>
 
-      {/* Stars behind content */}
-      <div className="relative">
-        <StarField />
-
-        {/* Featured Projects */}
-        <section className="relative z-10 max-w-5xl mx-auto px-6 pb-20 pt-12">
-          <h2 className="text-2xl font-bold mb-6">Featured Work<span className="text-amber-400">.</span></h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {[...projects].filter((p) => p.featured).sort((a, b) => {
-              const tier = (p) => {
-                if (p.comingSoon) return 0;
-                if (p.active) return 1;
-                if (p.featured) return 2;
-                return 3;
-              };
-              const tierDiff = tier(a) - tier(b);
-              if (tierDiff !== 0) return tierDiff;
-              return b.date.localeCompare(a.date);
-            }).map((project) => (
-              <div key={project.slug} onClick={() => setSelected(project)}
-                className="cursor-pointer bg-gray-900 border border-white/10 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-400/10 transition-all">
-                <img src={project.images[0]} alt={project.title} className="w-full h-48 object-contain bg-gray-800 p-4" />
-                <div className="p-5">
-                  <div className="flex gap-2 mb-2">{project.tags.map((tag) => (<span key={tag} className="text-xs bg-gray-800 px-2 py-1 rounded-full">{tag}</span>))}</div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-lg">{project.title}</h3>
-                    {project.comingSoon && (
-                      <span className="text-xs bg-amber-400 text-gray-950 px-2 py-0.5 rounded-full font-semibold">Coming Soon</span>
-                    )}
-                    {project.active && (
-                      <span className="text-xs bg-green-400 text-gray-950 px-2 py-0.5 rounded-full font-semibold">Active</span>
-                    )}
-                  </div>
-                  <p className="text-sm text-gray-400 mt-1">{project.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <Link to="/projects" className="text-amber-400 hover:text-amber-300 transition-colors text-sm mt-4 inline-block">View all projects →</Link>
-        </section>
-
-        {/* Divider — With Glow */}
-        <div className="relative z-10">
-          <div className="max-w-5xl mx-auto px-6">
-            <div className="h-[1px] bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
-          </div>
+      <section className="max-w-6xl mx-auto px-7 pb-28">
+        <h2 className="text-[38px] font-semibold tracking-tight text-ink mb-4">Featured posts<span className="text-amber">.</span></h2>
+        <div className="border-t border-line">
+          {featuredPosts.map((post) => (
+            <Link
+              key={post.slug}
+              to={`/blog/${post.slug}`}
+              className="group grid md:grid-cols-[1fr_auto] gap-x-8 gap-y-1 py-6 border-b border-line transition-[padding] duration-300 hover:pl-3"
+            >
+              <h3 className="text-xl font-semibold tracking-tight text-ink group-hover:text-amber transition-colors">{post.title}</h3>
+              <span className="font-mono text-xs text-mute md:row-span-2 md:pt-1.5">{post.date}</span>
+              <p className="text-sm leading-relaxed text-mute max-w-2xl">{post.excerpt}</p>
+            </Link>
+          ))}
         </div>
+        <Link to="/blog" className="inline-block mt-6 text-sm text-amber hover:text-ink transition-colors">View all posts →</Link>
+      </section>
 
-        {/* Featured Posts */}
-        <section className="relative z-10 max-w-5xl mx-auto px-6 pb-20 pt-12">
-          <h2 className="text-2xl font-bold mb-6">Featured Posts<span className="text-amber-400">.</span></h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {[...posts].filter((p) => p.featured).sort((a, b) => b.date.localeCompare(a.date)).map((post) => (
-              <Link to={`/blog/${post.slug}`} key={post.slug} className="block bg-gray-900 border border-white/10 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-400/10 transition-all">
-                <div className="p-5 flex justify-between items-start">
-                  <div>
-                    <h3 className="font-semibold text-lg">{post.title}</h3>
-                    <p className="text-sm text-gray-400 mt-1">{post.excerpt}</p>
-                  </div>
-                  <span className="text-sm text-gray-500 whitespace-nowrap ml-4">{post.date}</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-          <Link to="/blog" className="text-amber-400 hover:text-amber-300 transition-colors text-sm mt-4 inline-block">View all posts →</Link>
-        </section>
+      {createPortal(
+        <div aria-hidden="true" className={`fixed inset-0 z-[8000] bg-space pointer-events-none transition-opacity duration-[350ms] ${veil ? "opacity-100" : "opacity-0"}`} />,
+        document.body,
+      )}
 
-        <AnimatePresence>
-          {selected && <ProjectModal key={selected.slug} project={selected} onClose={() => setSelected(null)} />}
-        </AnimatePresence>
-      </div>
+      <AnimatePresence>
+        {selected && (
+          <ProjectModal key={selected.project.slug} project={selected.project} origin={selected.el} onClose={() => setSelected(null)} />
+        )}
+      </AnimatePresence>
     </>
   );
 }

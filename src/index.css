@@ -11,6 +11,7 @@
   --font-mono: "Geist Mono", ui-monospace, monospace;
 }
 
-html { background-color: var(--color-space); }
+/* position: framer-motion measures scroll targets against <html>; a static root makes that inexact. */
+html { background-color: var(--color-space); position: relative; }
 body { -webkit-font-smoothing: antialiased; }
 ::selection { background: rgba(251, 191, 36, 0.3); }

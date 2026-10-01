@@ -16,6 +16,17 @@ describe("projectDetails", () => {
     expect(d.highlights).toEqual([]);
     expect(d.role).toBeNull();
   });
+  it("summarizes a description to its first sentence for cards", () => {
+    expect(projectDetails(bySlug("lost-and-hound")).summary).toBe(
+      "A campus platform for reporting and reuniting lost and found items, featuring an interactive map and real-time messaging.",
+    );
+    expect(projectDetails({ title: "X", description: "One line only", images: [] }).summary).toBe("One line only");
+  });
+  it("covers cards with the first screenshot, skipping the logo", () => {
+    expect(projectDetails(bySlug("lost-and-hound")).cover).toBe("/images/lost-and-hound/LostandHoundLogin.png");
+    expect(projectDetails(bySlug("wnba-reference")).cover).toBe("/images/wnba-reference/WNBARefHero.png");
+    expect(projectDetails(bySlug("backyard")).cover).toBe("/images/backyard/intro_screen_hero.gif");
+  });
   it("drops the descriptive prefix from BBAL Sim's tech line", () => {
     expect(projectDetails(bySlug("bbal-sim")).stack).toBe("TypeScript, React, Dexie.js (IndexedDB), Web Workers, Vite");
   });

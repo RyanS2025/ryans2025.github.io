@@ -6,7 +6,11 @@ export function projectDetails(project, resume = resumeData) {
   const r = resume.projects.find((p) => p.name === project.title);
   // BBAL Sim's tech line leads with a descriptive subtitle ("… Engine  ·  TypeScript, …").
   const stack = r?.tech ? r.tech.split(/\s{2}·\s{2}/).pop() : null;
-  return { ...project, highlights: r?.bullets ?? [], role: r?.role ?? null, stack, dates: r?.dates ?? null };
+  // Cards show only the first sentence; the modal's Overview shows all of it.
+  const summary = (project.description ?? "").split(/(?<=\.)\s+/)[0];
+  // images[0] is usually the project's logo; cards read better with a real screenshot.
+  const cover = project.images.find((src) => !/logo/i.test(src)) ?? project.images[0];
+  return { ...project, summary, cover, highlights: r?.bullets ?? [], role: r?.role ?? null, stack, dates: r?.dates ?? null };
 }
 
 export function modalSections(d) {
