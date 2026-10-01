@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useReducedMotion } from "framer-motion";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { HiHome } from "react-icons/hi2";
 import { useResume } from "../hooks/useResume";
@@ -22,6 +23,14 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [solid, setSolid] = useState(false);
   const navRef = useRef(null);
+  const reduce = useReducedMotion();
+
+  // Already on Home, the link wouldn't change the route, so nothing would
+  // happen. Scroll back to the top instead (the fly-through rewinds on the way).
+  const goHome = () => {
+    setOpen(false);
+    if (pathname === "/") window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+  };
 
   // Frost the bar only when page content is actually underneath it. On the
   // homepage that's once #work reaches the bar (the hero is full-bleed sky);
@@ -64,7 +73,7 @@ export default function Navbar() {
         <Link
           to="/"
           aria-label="Ryan Sinha, home"
-          onClick={() => setOpen(false)}
+          onClick={goHome}
           className="group flex items-center gap-2 font-semibold tracking-tight text-ink hover:text-amber transition-colors"
         >
           <HiHome aria-hidden="true" className="text-[18px] text-ink group-hover:text-amber transition-colors" />
