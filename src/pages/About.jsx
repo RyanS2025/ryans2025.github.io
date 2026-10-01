@@ -31,7 +31,7 @@ export default function About() {
 
   return (
     <>
-      <section className="relative overflow-hidden -mt-16">
+      <section className="relative overflow-hidden">
         <img
           src="/images/HeroBackdrop.png"
           alt=""
