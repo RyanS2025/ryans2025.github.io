@@ -1,73 +1,109 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { useResume } from "../hooks/useResume";
 
 const links = [
-  { to: "/", label: "Home" },
   { to: "/about", label: "About" },
   { to: "/projects", label: "Projects" },
   { to: "/blog", label: "Blog" },
   { to: "/contact", label: "Contact" },
 ];
 
+const socials = [
+  { href: "https://github.com/RyanS2025", label: "GitHub", Icon: FaGithub },
+  { href: "https://www.linkedin.com/in/ryan-sinha-306986387/", label: "LinkedIn", Icon: FaLinkedin },
+];
+
 export default function Navbar() {
   const { pathname } = useLocation();
+  const { openResume } = useResume();
   const [open, setOpen] = useState(false);
+  const [solid, setSolid] = useState(false);
+  const navRef = useRef(null);
+
+  // Frost the bar only when page content is actually underneath it. On the
+  // homepage that's once #work reaches the bar (the hero is full-bleed sky);
+  // never during the View work autopilot, which would flash it over the stars.
+  useEffect(() => {
+    let frame = 0;
+    const check = () => {
+      frame = 0;
+      const nav = navRef.current;
+      if (!nav) return;
+      const work = document.getElementById("work");
+      const next = document.body.dataset.autopilot !== "1" &&
+        (work ? window.scrollY + nav.offsetHeight > work.offsetTop : window.scrollY > 8);
+      setSolid((prev) => (prev === next ? prev : next));
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(check); };
+    // Route content mounts after a page transition, so re-check once it has.
+    const settle = setTimeout(check, 400);
+    frame = requestAnimationFrame(check);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      clearTimeout(settle);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [pathname]);
+
+  const linkClass = (to) => `text-sm transition-colors ${pathname === to ? "text-ink" : "text-mute hover:text-ink"}`;
 
   return (
-    <nav className="sticky top-4 z-50 max-w-4xl w-full mx-auto px-4">
-      <div className="backdrop-blur-md bg-gray-950/60 border border-white/10 rounded-full px-8 h-14 flex items-center w-full">
-        {/* Left — Logo */}
-        <Link to="/" className="text-lg font-bold tracking-tight text-amber-400">
-          Ryan Sinha
+    <nav
+      ref={navRef}
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color] duration-300 ${
+        solid || open ? "bg-space/70 backdrop-blur-[14px] border-line" : "border-transparent"
+      }`}
+    >
+      <div className="h-16 px-7 flex items-center justify-between">
+        <Link to="/" className="font-semibold tracking-tight text-ink" onClick={() => setOpen(false)}>
+          Ryan Sinha<span className="text-amber">.</span>
         </Link>
 
-        {/* Center — Links */}
-        <div className="hidden md:flex gap-6 flex-1 justify-center">
+        <div className="hidden md:flex items-center gap-7">
           {links.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              className={`text-sm transition-colors ${pathname === l.to ? "text-amber-400" : "text-gray-400 hover:text-white"}`}
-            >
-              {l.label}
-            </Link>
+            <Link key={l.to} to={l.to} className={linkClass(l.to)}>{l.label}</Link>
           ))}
+          <button onClick={openResume} className="text-sm text-mute hover:text-ink transition-colors cursor-pointer">
+            Resume
+          </button>
+          <div className="flex items-center gap-4 pl-2 border-l border-line">
+            {socials.map(({ href, label, Icon }) => (
+              <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>
+                <Icon className="text-lg text-mute hover:text-ink transition-colors" />
+              </a>
+            ))}
+          </div>
         </div>
 
-        {/* Right — Socials */}
-        <div className="hidden md:flex gap-4">
-          <a href="https://github.com/RyanS2025" target="_blank" rel="noopener noreferrer">
-            <FaGithub className="text-lg text-gray-400 hover:text-white transition-colors" />
-          </a>
-          <a href="https://www.linkedin.com/in/ryan-sinha-306986387/" target="_blank" rel="noopener noreferrer">
-            <FaLinkedin className="text-lg text-gray-400 hover:text-white transition-colors" />
-          </a>
-        </div>
-
-        {/* Mobile hamburger */}
-        <button className="md:hidden ml-auto" onClick={() => setOpen(!open)}>
-          ☰
+        <button
+          className="md:hidden text-ink text-xl"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          onClick={() => setOpen(!open)}
+        >
+          {open ? "✕" : "☰"}
         </button>
       </div>
 
-      {/* Menu for Mobile */}
       {open && (
-        <div className="md:hidden mt-2 backdrop-blur-md bg-gray-950/60 border border-white/10 rounded-2xl px-6 py-4 flex flex-col gap-3">
+        <div className="md:hidden bg-space/95 border-t border-line px-7 py-5 flex flex-col gap-4">
           {links.map((l) => (
-            <Link key={l.to} to={l.to} onClick={() => setOpen(false)}
-              className="text-sm text-gray-300"
-            >
-              {l.label}
-            </Link>
+            <Link key={l.to} to={l.to} onClick={() => setOpen(false)} className={linkClass(l.to)}>{l.label}</Link>
           ))}
-          <div className="flex gap-4 pt-2 border-t border-white/10">
-            <a href="https://github.com/RyanS2025" target="_blank" rel="noopener noreferrer">
-              <FaGithub className="text-lg text-gray-400 hover:text-white transition-colors" />
-            </a>
-            <a href="https://www.linkedin.com/in/ryan-sinha-306986387/" target="_blank" rel="noopener noreferrer">
-              <FaLinkedin className="text-lg text-gray-400 hover:text-white transition-colors" />
-            </a>
+          <button onClick={() => { setOpen(false); openResume(); }} className="text-sm text-mute text-left">
+            Resume
+          </button>
+          <div className="flex gap-4 pt-3 border-t border-line">
+            {socials.map(({ href, label, Icon }) => (
+              <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>
+                <Icon className="text-lg text-mute hover:text-ink transition-colors" />
+              </a>
+            ))}
           </div>
         </div>
       )}

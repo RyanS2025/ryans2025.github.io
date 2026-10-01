@@ -20,7 +20,7 @@ export default function Contact() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden -mt-16">
+      <section className="relative overflow-hidden">
         <img src="/images/HeroBackdrop.png" alt="" className="absolute inset-0 w-full h-full object-cover opacity-50" />
         <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-gray-950 to-transparent" />
         <div className="max-w-5xl mx-auto px-6 pt-32 pb-20 relative">
