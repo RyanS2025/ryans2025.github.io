@@ -8,8 +8,9 @@ export function projectDetails(project, resume = resumeData) {
   const stack = r?.tech ? r.tech.split(/\s{2}·\s{2}/).pop() : null;
   // Cards show only the first sentence; the modal's Overview shows all of it.
   const summary = (project.description ?? "").split(/(?<=\.)\s+/)[0];
-  // images[0] is usually the project's logo; cards read better with a real screenshot.
-  const cover = project.images.find((src) => !/logo/i.test(src)) ?? project.images[0];
+  // Cards use the project's optimized cover if it has one; otherwise the first
+  // screenshot (images[0] is usually the logo, which crops badly on a card).
+  const cover = project.cover ?? project.images.find((src) => !/logo/i.test(src)) ?? project.images[0];
   return { ...project, summary, cover, highlights: r?.bullets ?? [], role: r?.role ?? null, stack, dates: r?.dates ?? null };
 }
 

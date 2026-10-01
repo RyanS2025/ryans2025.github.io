@@ -2,6 +2,7 @@ const projects = [
   { //Lost and Hound
     date: "2026-03-17",
     slug: "lost-and-hound",
+    cover: "/images/covers/lost-and-hound.webp", // small WebP for cards; full screenshots stay in images
     title: "Lost and Hound",
     description:
       "A campus platform for reporting and reuniting lost and found items, featuring an interactive map and real-time messaging. For client purposes, the repository is private. Please reach out for access to view.",
@@ -24,6 +25,7 @@ const projects = [
   { // WNBA Reference
     date: "2026-03-25",
     slug: "wnba-reference",
+    cover: "/images/covers/wnba-reference.webp", // small WebP for cards; full screenshots stay in images
     title: "WNBA Reference",
     description:
       "A full-stack WNBA stat tracker featuring 180+ players with searchable/sortable stats, team pages with rosters, shooting splits, and a dark glassmorphism UI with team-colored accents and ESPN headshots.",
@@ -44,6 +46,7 @@ const projects = [
   { // BBAL Sim
     date: "2025-09-01",
     slug: "bbal-sim",
+    cover: "/images/covers/bbal-sim.webp", // small WebP for cards; full screenshots stay in images
     title: "BBAL Sim",
     description: "A deep basketball general-manager simulator that runs entirely in the browser. Take over a franchise, build through the draft or trade for stars, manage egos and injuries, and chase championships — featuring skill-based simulation, a living locker room with morale and holdouts, 100-voter media awards, and full league history. No servers; every league lives in IndexedDB.",
     tags: ["React", "TypeScript", "Tailwind CSS", "Dexie.js", "Vite"],
