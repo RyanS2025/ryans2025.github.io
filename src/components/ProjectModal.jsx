@@ -57,6 +57,8 @@ export default function ProjectModal({ project, origin, onClose }) {
         const els = [...panelRef.current.querySelectorAll(FOCUSABLE)];
         if (!els.length) return;
         const first = els[0], last = els[els.length - 1];
+        // Clicking plain text drops focus to <body>; pull it back instead of tabbing into the page behind.
+        if (!panelRef.current.contains(document.activeElement)) { e.preventDefault(); first.focus(); return; }
         if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }

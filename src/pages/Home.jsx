@@ -17,6 +17,7 @@ export default function Home() {
   const heroRef = useRef(null), workRef = useRef(null), gridRef = useRef(null);
   const [selected, setSelected] = useState(null); // { project, el }
   const [veil, setVeil] = useState(false);
+  const landing = useRef({ timer: 0, frame: 0 });
   const { flyTo } = useAutopilot();
   const reduce = useReducedMotion();
 
@@ -31,15 +32,31 @@ export default function Home() {
     return () => io.disconnect();
   }, [reduce]);
 
+  // A route change can unmount Home mid-landing; never let the timers outlive it.
+  useEffect(() => () => {
+    clearTimeout(landing.current.timer);
+    cancelAnimationFrame(landing.current.frame);
+  }, []);
+
   // The jump from the end of the hero to the grid happens behind a fade, then
   // the cards replay their entrance so the arrival reads as one motion.
   const land = useCallback(() => {
     setVeil(true);
-    setTimeout(() => {
-      const grid = gridRef.current;
+    clearTimeout(landing.current.timer);
+    landing.current.timer = setTimeout(() => {
+      const grid = gridRef.current, work = workRef.current;
+      if (!grid || !work) return;
+      // Snap the cards hidden with transitions off (data-reset), commit that
+      // with a reflow, then re-enable and reveal over two frames, so a repeat
+      // visit replays the fade-up instead of reversing mid-transition.
+      grid.dataset.reset = "";
       delete grid.dataset.in;
-      window.scrollTo(0, workRef.current.offsetTop);
-      requestAnimationFrame(() => { grid.dataset.in = ""; setVeil(false); });
+      window.scrollTo(0, work.offsetTop);
+      void grid.offsetHeight;
+      landing.current.frame = requestAnimationFrame(() => {
+        delete grid.dataset.reset;
+        landing.current.frame = requestAnimationFrame(() => { grid.dataset.in = ""; setVeil(false); });
+      });
     }, 360);
   }, []);
 

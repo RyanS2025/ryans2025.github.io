@@ -55,4 +55,8 @@ export function heroScene(p) {
   };
 }
 
+// Lanes center below Tailwind's md breakpoint (where cards switch to 84vw) and on
+// short landscape screens, where a side lane plus a full-height card won't fit.
+export const isNarrow = (width, height) => width < 768 || height < 560;
+
 export const autopilotDuration = (remaining, total) => 900 + 2300 * clamp(total > 0 ? remaining / total : 0);

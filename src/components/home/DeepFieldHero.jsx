@@ -3,7 +3,7 @@ import { useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion"
 import WarpField from "./WarpField";
 import ProjectFront from "./ProjectFront";
 import { useResume } from "../../hooks/useResume";
-import { focusIndex, frontPose, heroScene, localTime } from "../../lib/flight";
+import { focusIndex, frontPose, heroScene, isNarrow, localTime } from "../../lib/flight";
 
 /**
  * The Deep Field hero: a sticky stage over Ryan's Milky Way photo. Scroll
@@ -28,7 +28,7 @@ export default function DeepFieldHero({ heroRef, projects, onOpen, onViewWork, m
     title.current.style.pointerEvents = s.titleInteractive ? "auto" : "none";
     hint.current.style.opacity = s.hintOpacity;
     hud.current.style.opacity = s.hudVisible ? 1 : 0;
-    const narrow = window.innerWidth < 800;
+    const narrow = isNarrow(window.innerWidth, window.innerHeight);
     fronts.current.forEach((el, i) => {
       if (!el) return;
       const f = frontPose(localTime(p, i), i, narrow);

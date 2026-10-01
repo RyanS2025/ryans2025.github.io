@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 
@@ -48,6 +48,24 @@ export default function ResumeModal({ onClose, onDownload, onDownloadPdf, imageS
   const [pdfDone, setPdfDone] = useState(false);
   const pngBtnRef = useRef(null);
   const pdfBtnRef = useRef(null);
+  const closeRef = useRef(null);
+
+  // Now that this opens from the nav and hero, behave like a real dialog:
+  // Esc closes, the page behind can't scroll (it would fly the hero), and
+  // focus moves in, then back to whatever opened it.
+  useEffect(() => {
+    const opener = document.activeElement;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus({ preventScroll: true });
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+      opener?.focus?.({ preventScroll: true });
+    };
+  }, [onClose]);
 
   const handleDownload = async () => {
     if (pngDone) return;
@@ -70,6 +88,9 @@ export default function ResumeModal({ onClose, onDownload, onDownloadPdf, imageS
       {...backdrop}
     >
       <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Resume"
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-[680px] mx-4 max-h-[85vh] overflow-hidden flex flex-col rounded-3xl border border-white/[0.12]"
         style={{
@@ -98,6 +119,7 @@ export default function ResumeModal({ onClose, onDownload, onDownloadPdf, imageS
 
           {/* Close */}
           <button
+            ref={closeRef}
             onClick={onClose}
             aria-label="Close resume"
             // Dark chip: this sits over the white resume image, where a translucent white button disappears.

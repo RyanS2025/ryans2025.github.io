@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { localTime, frontPose, focusIndex, heroScene, autopilotDuration, FLIGHT } from "./flight";
+import { localTime, frontPose, focusIndex, heroScene, autopilotDuration, isNarrow, FLIGHT } from "./flight";
 
 describe("localTime", () => {
   it("is 0 before a card's window and 1 after it", () => {
@@ -67,5 +67,17 @@ describe("autopilotDuration", () => {
     expect(autopilotDuration(1000, 1000)).toBe(3200);
     expect(autopilotDuration(500, 1000)).toBe(2050);
     expect(autopilotDuration(0, 1000)).toBe(900);
+  });
+});
+
+describe("isNarrow", () => {
+  it("centers lanes on phones in portrait, at the same 768px breakpoint the card width uses", () => {
+    expect(isNarrow(390, 844)).toBe(true);
+    expect(isNarrow(767, 1000)).toBe(true);
+    expect(isNarrow(768, 1000)).toBe(false);
+  });
+  it("centers lanes on short landscape screens so a card can't run off-screen", () => {
+    expect(isNarrow(844, 390)).toBe(true);
+    expect(isNarrow(1440, 860)).toBe(false);
   });
 });
