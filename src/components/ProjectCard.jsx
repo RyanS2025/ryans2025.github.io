@@ -29,7 +29,8 @@ export default function ProjectCard({ project, onOpen, index = 0, reveal = false
             src={project.cover}
             alt={`${project.title} screenshot`}
             loading="lazy"
-            className="w-full aspect-video object-cover object-top transition-transform duration-700 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.04]"
+            style={{ objectPosition: project.coverPosition }}
+            className="w-full aspect-video object-cover transition-transform duration-700 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.04]"
           />
         </div>
         <div className="px-5.5 pt-5 pb-6">

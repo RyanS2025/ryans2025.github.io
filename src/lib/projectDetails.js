@@ -11,7 +11,9 @@ export function projectDetails(project, resume = resumeData) {
   // Cards use the project's optimized cover if it has one; otherwise the first
   // screenshot (images[0] is usually the logo, which crops badly on a card).
   const cover = project.cover ?? project.images.find((src) => !/logo/i.test(src)) ?? project.images[0];
-  return { ...project, summary, cover, highlights: r?.bullets ?? [], role: r?.role ?? null, stack, dates: r?.dates ?? null };
+  // Page screenshots read best cropped from the top; art like a GIF can opt into "center".
+  const coverPosition = project.coverPosition ?? "top";
+  return { ...project, summary, cover, coverPosition, highlights: r?.bullets ?? [], role: r?.role ?? null, stack, dates: r?.dates ?? null };
 }
 
 export function modalSections(d) {

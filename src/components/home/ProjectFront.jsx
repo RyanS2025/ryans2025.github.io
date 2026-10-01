@@ -27,7 +27,7 @@ export default function ProjectFront({ project, onOpen, ref }) {
         hover:shadow-[0_0_0_1px_rgba(251,191,36,.55),0_0_60px_-6px_rgba(251,191,36,.45),0_30px_80px_-20px_rgba(0,0,0,.9)]"
     >
       <div className="h-[220px] max-md:h-[170px] [@media(max-height:560px)]:h-[22vh] bg-black/25 p-3.5 [@media(max-height:560px)]:p-2">
-        <img src={project.cover} alt="" fetchPriority="low" decoding="async" className="w-full h-full object-cover object-top rounded-[10px]" />
+        <img src={project.cover} alt="" fetchPriority="low" decoding="async" style={{ objectPosition: project.coverPosition }} className="w-full h-full object-cover rounded-[10px]" />
       </div>
       <div className="px-5 pt-4 pb-5">
         <h3 className="text-xl font-semibold tracking-tight text-ink flex items-center gap-2">
