@@ -22,10 +22,13 @@ describe("projectDetails", () => {
     );
     expect(projectDetails({ title: "X", description: "One line only", images: [] }).summary).toBe("One line only");
   });
-  it("covers cards with the first screenshot, skipping the logo", () => {
-    expect(projectDetails(bySlug("lost-and-hound")).cover).toBe("/images/lost-and-hound/LostandHoundLogin.png");
-    expect(projectDetails(bySlug("wnba-reference")).cover).toBe("/images/wnba-reference/WNBARefHero.png");
-    expect(projectDetails(bySlug("backyard")).cover).toBe("/images/backyard/intro_screen_hero.gif");
+  it("uses a project's optimized cover when it has one", () => {
+    expect(projectDetails(bySlug("lost-and-hound")).cover).toBe("/images/covers/lost-and-hound.webp");
+    expect(projectDetails(bySlug("wnba-reference")).cover).toBe("/images/covers/wnba-reference.webp");
+  });
+  it("falls back to the first screenshot, skipping the logo", () => {
+    const p = { title: "X", description: "", images: ["/a/XLogo.png", "/a/shot.png"] };
+    expect(projectDetails(p).cover).toBe("/a/shot.png");
   });
   it("drops the descriptive prefix from BBAL Sim's tech line", () => {
     expect(projectDetails(bySlug("bbal-sim")).stack).toBe("TypeScript, React, Dexie.js (IndexedDB), Web Workers, Vite");

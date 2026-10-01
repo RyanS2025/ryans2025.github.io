@@ -52,10 +52,11 @@ export default function DeepFieldHero({ heroRef, projects, onOpen, onViewWork, m
   }, [apply, scrollYProgress]);
 
   useEffect(() => {
-    // Fetch every front's screenshot up front so none pops in mid-flight.
+    // Fetch every front's screenshot before the flight reaches it, but at low
+    // priority so it never competes with the backdrop, fonts, or app code.
     const links = projects.map((p) => {
       const l = document.createElement("link");
-      l.rel = "preload"; l.as = "image"; l.href = p.cover;
+      l.rel = "preload"; l.as = "image"; l.href = p.cover; l.fetchPriority = "low";
       document.head.appendChild(l);
       return l;
     });
