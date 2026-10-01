@@ -1,6 +1,16 @@
 @import "tailwindcss";
 
-html {
-  background-color: #030712;
-  font-family: 'Geist', sans-serif;
+@theme {
+  --color-space: #05060a;
+  --color-ink: #EDEEF2;
+  --color-mute: #8b8f9c;
+  --color-line: rgba(255, 255, 255, 0.09);
+  --color-amber: #fbbf24;
+  --color-glass: rgba(15, 20, 35, 0.66);
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
 }
+
+html { background-color: var(--color-space); }
+body { -webkit-font-smoothing: antialiased; }
+::selection { background: rgba(251, 191, 36, 0.3); }

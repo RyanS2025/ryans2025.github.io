@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -16,7 +16,6 @@ const card = {
 
 export default function ProjectModal({ project, onClose }) {
     const [imgIndex, setImgIndex] = useState(0);
-    useEffect(() => { setImgIndex(0); }, [project]);
 
     return (
         <motion.div
