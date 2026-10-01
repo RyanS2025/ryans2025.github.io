@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
 import ClickSparkle from "./components/ClickSparkle";
+import ResumeProvider from "./context/ResumeProvider";
 import BlogPost from "./pages/BlogPost";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -42,6 +43,7 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
+      <ResumeProvider>
       <ClickSparkle>
         <div className="min-h-screen flex flex-col bg-gray-950 text-gray-100">
           <Navbar />
@@ -51,6 +53,7 @@ export default function App() {
           <Footer />
         </div>
       </ClickSparkle>
+      </ResumeProvider>
     </BrowserRouter>
   );
 }

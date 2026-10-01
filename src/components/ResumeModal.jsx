@@ -81,12 +81,15 @@ export default function ResumeModal({ onClose, onDownload, onDownloadPdf, imageS
         {...card}
       >
         {/* Resume Image */}
-        <div className="relative bg-black/25 rounded-t-3xl overflow-hidden">
-          <img
-            src={imageSrc}
-            alt="Ryan Sinha Resume"
-            className="w-full object-contain p-6"
-          />
+        {/* Only the image scrolls, so the actions below stay reachable on short screens. */}
+        <div className="relative bg-black/25 rounded-t-3xl overflow-hidden min-h-0 flex flex-col">
+          <div className="overflow-y-auto min-h-0">
+            <img
+              src={imageSrc}
+              alt="Ryan Sinha Resume"
+              className="w-full object-contain p-6"
+            />
+          </div>
 
           <div
             className="absolute bottom-0 left-0 right-0 h-[120px] pointer-events-none"
@@ -96,15 +99,16 @@ export default function ResumeModal({ onClose, onDownload, onDownloadPdf, imageS
           {/* Close */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-white/50 text-sm border border-white/10 backdrop-blur-xl transition-colors hover:bg-white/[0.14] hover:text-white/80"
-            style={{ background: "rgba(255,255,255,0.08)" }}
+            aria-label="Close resume"
+            // Dark chip: this sits over the white resume image, where a translucent white button disappears.
+            className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm border border-white/20 bg-[rgba(15,20,35,0.85)] transition-colors hover:bg-[rgba(15,20,35,1)]"
           >
             ✕
           </button>
         </div>
 
         {/* Actions */}
-        <div className="px-8 pt-4 pb-8 relative z-10 flex gap-2">
+        <div className="px-8 pt-4 pb-8 relative z-10 flex gap-2 shrink-0">
           {/* A real link to the PDF, so the opened tab has a shareable URL. */}
           <a
             href={pdfSrc}
