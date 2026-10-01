@@ -1,33 +1,10 @@
-import { useState, useCallback } from "react";
-import { AnimatePresence } from "framer-motion";
 import StarField from "../components/StarField";
 import { stripEmphasis } from "../utils/emphasis";
-import ResumeModal from "../components/ResumeModal";
+import { useResume } from "../hooks/useResume";
 import resumeData from "../data/resumeData";
 
-const RESUME_PDF = "/RyanSinhaResume.pdf";
-const RESUME_PNG = "/RyanSinha_Resume.png";
-
 export default function About() {
-  const [showResumeModal, setShowResumeModal] = useState(false);
-
-  // The resume is the hand-edited PDF in public/, plus a PNG rendered from it
-  // for the preview and PNG download. Replace both files together.
-  const openResumeModal = useCallback(() => setShowResumeModal(true), []);
-
-  const downloadResume = useCallback(() => {
-    const link = document.createElement("a");
-    link.download = "RyanSinha_Resume.png";
-    link.href = RESUME_PNG;
-    link.click();
-  }, []);
-
-  const downloadResumePdf = useCallback(() => {
-    const link = document.createElement("a");
-    link.download = "RyanSinhaResume.pdf";
-    link.href = RESUME_PDF;
-    link.click();
-  }, []);
+  const { openResume } = useResume();
 
   // Everything below is derived from resumeData so the page and the PDF can't
   // drift apart.
@@ -90,7 +67,7 @@ export default function About() {
             {/* Resume */}
             <h2 className="text-3xl font-bold">Resume</h2>
             <button
-              onClick={openResumeModal}
+              onClick={openResume}
               className="text-md text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
             >
               Download Resume →
@@ -140,17 +117,6 @@ export default function About() {
         </section>
       </div>
 
-      <AnimatePresence>
-        {showResumeModal && (
-          <ResumeModal
-            onClose={() => setShowResumeModal(false)}
-            onDownload={downloadResume}
-            onDownloadPdf={downloadResumePdf}
-            imageSrc={RESUME_PNG}
-            pdfSrc={RESUME_PDF}
-          />
-        )}
-      </AnimatePresence>
     </>
   );
 }
