@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FiHome } from "react-icons/fi";
 import { useResume } from "../hooks/useResume";
 
 const links = [
@@ -60,8 +61,14 @@ export default function Navbar() {
       }`}
     >
       <div className="h-16 px-7 flex items-center justify-between">
-        <Link to="/" className="font-semibold tracking-tight text-ink" onClick={() => setOpen(false)}>
-          Ryan Sinha<span className="text-amber">.</span>
+        <Link
+          to="/"
+          aria-label="Ryan Sinha, home"
+          onClick={() => setOpen(false)}
+          className="group flex items-center gap-2 font-semibold tracking-tight text-ink hover:text-amber transition-colors"
+        >
+          <FiHome aria-hidden="true" className="text-[17px] text-mute group-hover:text-amber transition-colors" />
+          Ryan Sinha
         </Link>
 
         <div className="hidden md:flex items-center gap-7">

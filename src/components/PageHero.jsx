@@ -26,7 +26,7 @@ export default function PageHero({ title, subtitle, back, children, narrow = fal
         )}
         {children ?? (
           <>
-            <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-ink">{title}<span className="text-amber">.</span></h1>
+            <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-ink">{title}</h1>
             {subtitle && <p className="mt-3 text-mute">{subtitle}</p>}
           </>
         )}

@@ -54,7 +54,7 @@ export default function About() {
             className="w-44 h-44 rounded-full object-cover mb-6 md:mb-0 border border-amber/60 shadow-[0_0_40px_-8px_rgba(251,191,36,.45)]"
           />
           <div>
-            <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-ink mb-4">About me<span className="text-amber">.</span></h1>
+            <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-ink mb-4">About me</h1>
             <p className="max-w-2xl text-lg font-light leading-relaxed text-[#c9ccd4]">
               I'm Ryan, a second-year Computer Science and Business Administration student at Northeastern University.
               Originally from West Orange, New Jersey, I'm passionate about web development and love building tools that make people's lives easier.
