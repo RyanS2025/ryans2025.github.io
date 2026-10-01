@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useRef } from "react";
 import { easeInOutCubic } from "../lib/flight";
 
-const CANCEL_EVENTS = ["wheel", "touchstart", "keydown"];
+// mousedown covers scrollbar drags and clicks elsewhere (e.g. opening the resume mid-flight).
+const CANCEL_EVENTS = ["wheel", "touchstart", "keydown", "mousedown"];
 
 /**
  * Scrolls the window to `targetY` over `durationMs` with an ease-in-out, so
  * every scroll-driven animation on the way plays as if the visitor scrolled.
- * Any wheel, touch, or key input hands control back immediately and skips
+ * Any wheel, touch, key, or mouse-down input hands control back immediately and skips
  * `onArrive`. While flying, `document.body.dataset.autopilot` is "1" so the
  * nav and the hero's cards can stand down.
  */

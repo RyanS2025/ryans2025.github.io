@@ -13,7 +13,7 @@ export default function ProjectCard({ project, onOpen, index = 0, reveal = false
         // No motion-safe: here: media-query utilities are emitted after `in-*` ones with equal
         // specificity and would win, leaving cards hidden. Reduced motion is handled by the
         // parent setting data-in immediately (and transitions are off).
-        ? "opacity-0 translate-y-7 transition-[opacity,translate] duration-700 ease-[cubic-bezier(.2,.8,.2,1)] motion-reduce:transition-none in-data-[in]:opacity-100 in-data-[in]:translate-y-0 in-data-[in]:delay-[calc(var(--i)*90ms+120ms)]"
+        ? "opacity-0 translate-y-7 transition-[opacity,translate] duration-700 ease-[cubic-bezier(.2,.8,.2,1)] motion-reduce:transition-none in-data-[reset]:transition-none in-data-[in]:opacity-100 in-data-[in]:translate-y-0 in-data-[in]:delay-[calc(var(--i)*90ms+120ms)]"
         : undefined}
     >
       <button

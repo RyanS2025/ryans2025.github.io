@@ -26,14 +26,14 @@ export default function ProjectFront({ project, onOpen, ref }) {
         shadow-[0_30px_80px_-20px_rgba(0,0,0,.9)] transition-shadow duration-300
         hover:shadow-[0_0_0_1px_rgba(251,191,36,.55),0_0_60px_-6px_rgba(251,191,36,.45),0_30px_80px_-20px_rgba(0,0,0,.9)]"
     >
-      <div className="h-[220px] max-md:h-[170px] bg-black/25 p-3.5">
+      <div className="h-[220px] max-md:h-[170px] [@media(max-height:560px)]:h-[22vh] bg-black/25 p-3.5 [@media(max-height:560px)]:p-2">
         <img src={project.cover} alt="" fetchPriority="low" decoding="async" className="w-full h-full object-cover object-top rounded-[10px]" />
       </div>
       <div className="px-5 pt-4 pb-5">
         <h3 className="text-xl font-semibold tracking-tight text-ink flex items-center gap-2">
           {project.title} <StatusPill project={project} />
         </h3>
-        <p className="text-[13.5px] leading-normal text-white/55 mt-1.5 pr-16">{project.summary}</p>
+        <p className="text-[13.5px] leading-normal text-white/55 mt-1.5 pr-16 [@media(max-height:560px)]:hidden">{project.summary}</p>
         <TagList tags={project.tags} className="mt-3" />
       </div>
       <span className="absolute right-5 bottom-5 font-mono text-[11px] tracking-[.1em] text-amber/80">OPEN ↗</span>

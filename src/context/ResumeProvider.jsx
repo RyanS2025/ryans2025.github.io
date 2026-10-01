@@ -19,6 +19,7 @@ function download(href, filename) {
 export default function ResumeProvider({ children }) {
   const [open, setOpen] = useState(false);
   const openResume = useCallback(() => setOpen(true), []);
+  const closeResume = useCallback(() => setOpen(false), []);
   const value = useMemo(() => ({ openResume }), [openResume]);
 
   return (
@@ -29,7 +30,7 @@ export default function ResumeProvider({ children }) {
         <AnimatePresence>
           {open && (
             <ResumeModal
-              onClose={() => setOpen(false)}
+              onClose={closeResume}
               onDownload={() => download(RESUME_PNG, "RyanSinha_Resume.png")}
               onDownloadPdf={() => download(RESUME_PDF, "RyanSinhaResume.pdf")}
               imageSrc={RESUME_PNG}
