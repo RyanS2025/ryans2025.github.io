@@ -2,6 +2,11 @@ import { useForm, ValidationError } from "@formspree/react";
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import StarField from "../components/StarField";
+import PageHero from "../components/PageHero";
+
+const field =
+  "w-full p-3 rounded-xl bg-white/[.03] border border-line text-ink placeholder-mute/70 outline-none focus:border-amber transition-colors";
+const label = "font-mono text-[11px] tracking-[.12em] uppercase text-mute mb-1.5 block";
 
 export default function Contact() {
   const formRef = useRef();
@@ -19,63 +24,48 @@ export default function Contact() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <img src="/images/HeroBackdrop.png" alt="" className="absolute inset-0 w-full h-full object-cover opacity-50" />
-        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-gray-950 to-transparent" />
-        <div className="max-w-5xl mx-auto px-6 pt-32 pb-20 relative">
-          <h1 className="text-3xl font-bold mb-2">Contact Me<span className="text-amber-400">.</span></h1>
-          <p className="text-gray-400">Everything you need to reach out to me.</p>
-        </div>
-      </section>
+      <PageHero title="Contact Me" subtitle="Everything you need to reach out to me." />
 
-      {/* Stars behind content */}
       <div className="relative">
         <StarField />
-
-        <section className="relative z-10 max-w-5xl mx-auto px-6 py-12">
+        <section className="relative z-10 max-w-5xl mx-auto px-6 pb-24">
           <form ref={formRef} className="max-w-xl" onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-5">
               <div>
-                <label className="text-sm text-gray-400 mb-1 block">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your name"
-                  className="w-full p-3 rounded-lg bg-gray-900 border border-white/10 text-gray-100 placeholder-gray-500 outline-none focus:border-amber-400 transition-colors"
-                />
+                <label htmlFor="contact-name" className={label}>Name</label>
+                <input id="contact-name" type="text" name="name" placeholder="Your name" className={field} />
               </div>
 
               <div>
-                <label className="text-sm text-gray-400 mb-1 block">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your email"
-                  className="w-full p-3 rounded-lg bg-gray-900 border border-white/10 text-gray-100 placeholder-gray-500 outline-none focus:border-amber-400 transition-colors"
-                />
-                <ValidationError prefix="Email" field="email" errors={state.errors} />
+                <label htmlFor="contact-email" className={label}>Email</label>
+                <input id="contact-email" type="email" name="email" placeholder="Your email" className={field} />
+                <ValidationError prefix="Email" field="email" errors={state.errors} className="text-sm text-red-400 mt-1.5" />
               </div>
 
               <div>
-                <label className="text-sm text-gray-400 mb-1 block">Message</label>
+                <label htmlFor="contact-message" className={label}>Message</label>
                 <textarea
+                  id="contact-message"
                   name="message"
                   defaultValue={prefill}
                   placeholder="Write your message here"
                   rows={5}
-                  className="w-full p-3 rounded-lg bg-gray-900 border border-white/10 text-gray-100 placeholder-gray-500 outline-none focus:border-amber-400 transition-colors"
+                  className={field}
                 />
-                <ValidationError prefix="Message" field="message" errors={state.errors} />
+                <ValidationError prefix="Message" field="message" errors={state.errors} className="text-sm text-red-400 mt-1.5" />
               </div>
 
-              <button type="submit" disabled={state.submitting}
-                className="self-start w-40 py-3 rounded-lg font-medium transition-colors bg-amber-400 text-gray-950 hover:bg-amber-300 disabled:opacity-50">
+              <button
+                type="submit"
+                disabled={state.submitting}
+                className="self-start px-6 py-3 rounded-full font-medium bg-amber text-space cursor-pointer shadow-[0_0_30px_-6px_rgba(251,191,36,.5)]
+                  transition-[translate,box-shadow,opacity] hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-default"
+              >
                 {state.submitting ? "Sending..." : "Send message"}
               </button>
 
               {state.succeeded && (
-                <p className="text-amber-400 text-sm mt-2">Message sent! I'll get back to you soon.</p>
+                <p className="text-amber text-sm">Message sent! I'll get back to you soon.</p>
               )}
             </div>
           </form>
