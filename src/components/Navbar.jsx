@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { FiHome } from "react-icons/fi";
+import { HiHome } from "react-icons/hi2";
 import { useResume } from "../hooks/useResume";
 
 const links = [
@@ -67,7 +67,7 @@ export default function Navbar() {
           onClick={() => setOpen(false)}
           className="group flex items-center gap-2 font-semibold tracking-tight text-ink hover:text-amber transition-colors"
         >
-          <FiHome aria-hidden="true" className="text-[17px] text-mute group-hover:text-amber transition-colors" />
+          <HiHome aria-hidden="true" className="text-[18px] text-ink group-hover:text-amber transition-colors" />
           Ryan Sinha
         </Link>
 
