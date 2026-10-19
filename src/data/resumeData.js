@@ -14,11 +14,11 @@ const resumeData = {
   contact: {
     location: "Boston, MA",
     phone: "(862) 321-7078",
-    email: "ryan@ryansinha.dev",
+    email: "ryansinha@gmail.com",
     availability: "January – August 2027",
     links: [
       { label: "ryansinha.dev", href: "https://ryansinha.dev" },
-      { label: "linkedin.com/in/ryansinha", href: "https://www.linkedin.com/in/ryansinha" },
+      { label: "linkedin.com/in/ryan-sinha-306986387", href: "https://www.linkedin.com/in/ryan-sinha-306986387" },
       { label: "github.com/RyanS2025", href: "https://github.com/RyanS2025" },
     ],
   },
@@ -33,10 +33,7 @@ const resumeData = {
       // `colleges` share line 1; `degree` and `gpa` share line 2. Giving each
       // its own line cost four lines for what reads fine as two.
       school: "Northeastern University",
-      // Both colleges in full. At 10pt this line measures 695px against the
-      // 720px of usable width; it did not fit at 10.5pt, which is part of why
-      // the body size came back down.
-      colleges: "Khoury College of Computer Sciences & D'Amore-McKim School of Business",
+      colleges: "Khoury College of Computer Sciences",
       location: "Boston, MA",
       // Names the major, so there is no separate "Major:" line.
       degree: "Candidate for a Bachelor of Science in Computer Science and Business Administration",
@@ -47,26 +44,23 @@ const resumeData = {
       // May 2029)" (290px) needs 815px of the 720px available and wrapped.
       dates: "September 2025 – Present",
       gradDate: "Expected May 2029",
-      // Fundamentals of Computer Science removed — not taken. CS3000 is in
-      // progress, which the checklist explicitly allows.
+      // In-progress courses are marked, which the checklist explicitly allows.
       coursework: [
-        "Algorithms and Data",
-        "Object-Oriented Design",
-        "Program Design and Implementation",
+        "Algorithms & Data (in progress)",
+        "Computer Systems (in progress)",
+        "Introduction to Databases",
+        "Program Design & Implementation 1 & 2",
         "Discrete Structures",
+        "Financial Accounting & Reporting",
+        "Profit Analysis for Managerial Advising (in progress)",
       ],
-      honors: [],
+      honors: ["Dean's List (Fall 2025, Spring 2026)"],
     },
   ],
 
   // Ordered by impact, not date: Lost and Hound is the live product with an
-  // institutional partnership and leads the section.
-  // TODO(ryan): bullets below are the PREVIOUS text, kept as a placeholder so
-  // the layout can be measured. They get rewritten from the Strengths Reports
-  // once the outstanding interview answers land.
-  // Ordered by impact, not date: Lost and Hound is the live product with an
-  // institutional partnership and leads the section. Every claim below is
-  // either verified in the repo or supplied by Ryan; see the bullet notes.
+  // institutional partnership and leads the section. Bullet text matches
+  // public/RyanSinhaResume.pdf word for word; only the ** anchors are added.
   projects: [
     {
       name: "Lost and Hound",
@@ -75,11 +69,13 @@ const resumeData = {
       tech: "React, Node.js, Express, Supabase, PostgreSQL, Google Cloud Vision, Capacitor",
       dates: "February 2026 – Present",
       bullets: [
-        "Operate a live campus lost-and-found with **130+ users** across web and iOS, five months in production.",
-        "Screen photo uploads via a **two-stage Cloud Vision pipeline** rejecting IDs and cards by Luhn and MRZ checks.",
-        "Partnered with **Northeastern's Curry Student Center** to route handovers through their desk, enforced server-side.",
-        "Built **76 REST endpoints** over 21 Postgres tables behind two-factor auth, passkeys, and moderator guards.",
-        "Deployed to Railway via gated GitHub Actions, covered by **116 unit tests** and 8 Playwright end-to-end specs.",
+        "Drove user acquisition and retention to **150+ users** for a campus platform serving Northeastern's Student Center with a Capacitor iOS app.",
+        "Pitched and partnered with **Student Center senior leadership** to unify peer reporting and maximize student engagement.",
+        "Built **real-time layer** for live feed, direct messaging, moderator dashboards, and Google Maps integration.",
+        "Enhanced engagement using keyword search, category filters, and **importance ranking** for high-priority items.",
+        "Automated photo screening across **all user uploads** using Google Cloud Vision.",
+        "Secured API with a **requireAuth → require2FA → role-guard** middleware chain, RLS, and tiered rate limiting.",
+        "Created **moderator console** with queues, tickets, live stats, and an infrastructure cost tracker for spend projection.",
       ],
     },
     {
@@ -89,10 +85,12 @@ const resumeData = {
       tech: "React, Express, Supabase, PostgreSQL, Vite, Tailwind CSS",
       dates: "May 2026 – Present",
       bullets: [
-        "Overhauled a stalled club-discovery platform, introducing sprint planning and code review for a **core team of 5**.",
-        "Closed **four world-writable Postgres RLS policies** exposing user emails and allowing anonymous profile writes.",
-        "Eliminated direct database access from the browser, routing all mutations through a **JWT-verified Express API**.",
-        "Built the club onboarding wizard now used by **15 clubs**, with hashed invite tokens and atomic redemption.",
+        "Centralized **campus club discovery** and event marketing to boost student onboarding and active engagement.",
+        "Designed core **authentication system** (login, signup, reset, transactional email), club calendar, and search.",
+        "Built a full-stack **content moderation system** featuring profanity filtering and Cloud Vision SafeSearch image scanning.",
+        "Identified and patched **four world-writable Postgres RLS policies** exposing emails and administrative endpoints.",
+        "Eliminated direct browser DB access using a **JWT-verified Express API** and standardized mass-assignment allowlists.",
+        "Spearheaded marketing outreach and onboarding wizard, acquiring **15+ student clubs** via hashed invite links.",
       ],
     },
     {
@@ -107,14 +105,11 @@ const resumeData = {
         href: "https://github.com/RyanS2025/NBA-Season-Simulation",
       },
       tech: "Basketball League Simulation Engine  ·  TypeScript, React, Dexie.js (IndexedDB), Web Workers, Vite",
-      // Start date is the first commit on the remote's default branch:
-      //   git log origin/HEAD --reverse --format='%ad' --date=short | head -1
-      dates: "October 2025 – Present",
+      dates: "October 2025 – August 2026",
       bullets: [
-        "Engineered a sim resolving games from player matchups across **29 skills and 22 tendencies**, not overall rating.",
-        "Modeled **10 personality traits** that move morale, chemistry, and shooting, escalating demands into holdouts.",
-        "Simulated awards via a **100-writer press corps** with beat and market bias, so media personality moves ballots.",
-        "Rebuilt a Python simulator in TypeScript, simulating a full **1,230-game season in 10 seconds** off the main thread.",
+        "Rebuilt Python simulator in TypeScript, enabling a **1,230-game season simulation in 10s** off main thread.",
+        "Engineered game outcomes using player matchups across **29 skills and 22 tendencies** instead of single ratings.",
+        "Integrated **10 personality traits** and a **100-writer press corps** dynamic to drive realistic award voting.",
       ],
     },
   ],
@@ -126,30 +121,20 @@ const resumeData = {
       company: "Oasis at Northeastern",
       location: "Boston, MA",
       title: "Accelerator Project Lead & Project Mentor",
-      dates: "September 2026 – December 2026",
+      dates: "September 2026 – Present",
       bullets: [
-        "Lead two Accelerator teams of **16–18 developers** total, running sprint planning, code review, and task assignment.",
-        "Mentor **first-year students** building their first computer science project, from environment setup to a working app.",
+        "Lead two Accelerator teams totaling **18–20 developers**, directing sprint planning, code review, and task allocation.",
+        "Mentor **3 first-year students** through full-stack software development, taking a project from setup to deployment.",
       ],
     },
     {
-      company: "Tropical Smoothie Cafe",
-      location: "Livingston, NJ",
-      title: "Crew Member",
-      dates: "March 2025 – September 2026",
+      // The resume merges both seasonal jobs into one entry.
+      company: "Guerriero Gelato & Tropical Smoothie Cafe",
+      location: "Caldwell, NJ; Livingston, NJ",
+      title: "Retail & Food Service (Seasonal)",
+      dates: "May 2023 – August 2026",
       bullets: [
-        "Served **150+ customers per shift** in a high-volume cafe, preparing food and drinks through peak rushes.",
-        "Operated the POS and reconciled cash drawers at close, keeping daily totals accurate across 3–4 shifts a week.",
-      ],
-    },
-    {
-      company: "Guerriero Gelato",
-      location: "Caldwell, NJ",
-      title: "Shift Leader",
-      dates: "May 2023 – July 2026",
-      bullets: [
-        "**Promoted to Shift Leader** in a second year, leading shifts of 3–5 staff and running closing procedures.",
-        "Trained new hires on POS operation, food safety, and service standards.",
+        "**Promoted to Shift Leader**, managing teams of 3–5 staff and serving 150+ customers per shift during peak hours.",
       ],
     },
     {
@@ -159,8 +144,7 @@ const resumeData = {
       // A recurring one-day festival each October, not a continuous role.
       dates: "October 2022 – October 2025",
       bullets: [
-        "Co-founded and organized West Orange's annual Diwali Festival, growing it to **200+ attendees** across four years.",
-        "Wrote and emceed the live program with a team of 5–6, recruiting **20+ local businesses** and performers.",
+        "Co-founded local festival, growing attendance to **200+ guests** and recruiting **20+ partner organizations**.",
       ],
     },
   ],
@@ -175,13 +159,14 @@ const resumeData = {
     },
     {
       category: "Frameworks & Libraries",
-      items: ["React", "Node.js", "Express", "Tailwind CSS", "Material UI", "Dexie.js", "Capacitor"],
+      items: ["React 19", "Node.js", "Express 5", "Tailwind CSS", "Material UI", "Framer Motion", "Capacitor"],
     },
     {
       category: "Tools & Platforms",
       items: [
-        "Git", "GitHub Actions", "Supabase", "PostgreSQL", "Supabase Realtime",
-        "Google Cloud Vision", "Playwright", "Vitest", "Docker", "Railway", "Vercel", "Vite",
+        "Git", "GitHub Actions", "Supabase", "PostgreSQL", "Google Maps API", "Google Cloud Vision",
+        "OneSignal", "Playwright", "Vitest", "Docker", "Railway", "Vercel", "Vite",
+        "Mobile iOS Development", "Start-Up Marketing",
       ],
     },
   ],

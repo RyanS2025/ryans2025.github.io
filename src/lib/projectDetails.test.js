@@ -7,8 +7,8 @@ const bySlug = (s) => projects.find((p) => p.slug === s);
 describe("projectDetails", () => {
   it("pulls resume bullets with ** markers intact", () => {
     const d = projectDetails(bySlug("lost-and-hound"));
-    expect(d.highlights).toHaveLength(5);
-    expect(d.highlights[0]).toContain("**130+ users**");
+    expect(d.highlights).toHaveLength(7);
+    expect(d.highlights[0]).toContain("**150+ users**");
     expect(d.role).toBe("Founder & Project Lead");
   });
   it("leaves projects that aren't on the resume without highlights", () => {
