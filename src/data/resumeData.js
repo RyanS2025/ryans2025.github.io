@@ -69,13 +69,13 @@ const resumeData = {
       tech: "React, Node.js, Express, Supabase, PostgreSQL, Google Cloud Vision, Capacitor",
       dates: "February 2026 – Present",
       bullets: [
-        "Drove user acquisition and retention to **150+ users** for a campus platform serving Northeastern's Student Center with a Capacitor iOS app.",
+        "Drove user acquisition and retention to **150+ users** for a campus platform serving Northeastern's Student Center with a **Capacitor iOS app**.",
         "Pitched and partnered with **Student Center senior leadership** to unify peer reporting and maximize student engagement.",
         "Built **real-time layer** for live feed, direct messaging, moderator dashboards, and Google Maps integration.",
-        "Enhanced engagement using keyword search, category filters, and **importance ranking** for high-priority items.",
-        "Automated photo screening across **all user uploads** using Google Cloud Vision.",
-        "Secured API with a **requireAuth → require2FA → role-guard** middleware chain, RLS, and tiered rate limiting.",
-        "Created **moderator console** with queues, tickets, live stats, and an infrastructure cost tracker for spend projection.",
+        "Enhanced engagement using **keyword search, category filters, and importance ranking** for high-priority items.",
+        "Automated photo screening across **all user uploads** using **Google Cloud Vision**.",
+        "Secured API with a **requireAuth → require2FA → role-guard** middleware chain, **RLS**, and **tiered rate limiting**.",
+        "Created moderator console with queues, tickets, live stats, and an **infrastructure cost tracker** for spend projection.",
       ],
     },
     {
@@ -85,9 +85,9 @@ const resumeData = {
       tech: "React, Express, Supabase, PostgreSQL, Vite, Tailwind CSS",
       dates: "May 2026 – Present",
       bullets: [
-        "Centralized **campus club discovery** and event marketing to boost student onboarding and active engagement.",
-        "Designed core **authentication system** (login, signup, reset, transactional email), club calendar, and search.",
-        "Built a full-stack **content moderation system** featuring profanity filtering and Cloud Vision SafeSearch image scanning.",
+        "Centralized campus club discovery and event marketing to boost **student onboarding** and **active engagement**.",
+        "Designed **core authentication system** (login, signup, reset, transactional email), club calendar, and search.",
+        "Built a **full-stack content moderation system** featuring profanity filtering and Cloud Vision SafeSearch image scanning.",
         "Identified and patched **four world-writable Postgres RLS policies** exposing emails and administrative endpoints.",
         "Eliminated direct browser DB access using a **JWT-verified Express API** and standardized mass-assignment allowlists.",
         "Spearheaded marketing outreach and onboarding wizard, acquiring **15+ student clubs** via hashed invite links.",
@@ -107,7 +107,7 @@ const resumeData = {
       tech: "Basketball League Simulation Engine  ·  TypeScript, React, Dexie.js (IndexedDB), Web Workers, Vite",
       dates: "October 2025 – August 2026",
       bullets: [
-        "Rebuilt Python simulator in TypeScript, enabling a **1,230-game season simulation in 10s** off main thread.",
+        "Rebuilt Python simulator in **TypeScript**, enabling a **1,230-game season simulation in 10s** off main thread.",
         "Engineered game outcomes using player matchups across **29 skills and 22 tendencies** instead of single ratings.",
         "Integrated **10 personality traits** and a **100-writer press corps** dynamic to drive realistic award voting.",
       ],
@@ -123,7 +123,7 @@ const resumeData = {
       title: "Accelerator Project Lead & Project Mentor",
       dates: "September 2026 – Present",
       bullets: [
-        "Lead two Accelerator teams totaling **18–20 developers**, directing sprint planning, code review, and task allocation.",
+        "Lead **two Accelerator teams totaling 18–20 developers**, directing sprint planning, code review, and task allocation.",
         "Mentor **3 first-year students** through full-stack software development, taking a project from setup to deployment.",
       ],
     },
@@ -134,7 +134,7 @@ const resumeData = {
       title: "Retail & Food Service (Seasonal)",
       dates: "May 2023 – August 2026",
       bullets: [
-        "**Promoted to Shift Leader**, managing teams of 3–5 staff and serving 150+ customers per shift during peak hours.",
+        "Promoted to **Shift Leader**, managing teams of **3–5 staff** and serving **150+ customers per shift** during peak hours.",
       ],
     },
     {
