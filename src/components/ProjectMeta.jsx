@@ -7,6 +7,15 @@ export function StatusPill({ project }) {
   if (project.active) {
     return <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#4ade80] text-[#06130a]">Active</span>;
   }
+  // Outlined rather than filled: still being built, not live yet.
+  if (project.wip) {
+    return (
+      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-[#7dd3fc]/45 text-[#7dd3fc]">
+        <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-[#7dd3fc] motion-safe:animate-pulse" />
+        WIP
+      </span>
+    );
+  }
   return null;
 }
 

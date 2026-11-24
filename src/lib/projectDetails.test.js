@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { existsSync } from "node:fs";
 import projects from "../data/projects";
 import { projectDetails, modalSections, sortProjects } from "./projectDetails";
 
@@ -7,7 +8,7 @@ const bySlug = (s) => projects.find((p) => p.slug === s);
 describe("projectDetails", () => {
   it("pulls resume bullets with ** markers intact", () => {
     const d = projectDetails(bySlug("lost-and-hound"));
-    expect(d.highlights).toHaveLength(7);
+    expect(d.highlights).toHaveLength(6);
     expect(d.highlights[0]).toContain("**150+ users**");
     expect(d.role).toBe("Founder & Project Lead");
   });
@@ -34,8 +35,21 @@ describe("projectDetails", () => {
     expect(projectDetails(bySlug("lost-and-hound")).coverPosition).toBe("top");
     expect(projectDetails(bySlug("backyard")).coverPosition).toBe("center");
   });
+  it("falls back to a project's own role, stack, dates, and highlights when it isn't on the resume", () => {
+    const d = projectDetails(bySlug("husky-exchange"));
+    expect(d.role).toBe("Mentor & Project Lead (Oasis, Fall 2026)");
+    expect(d.highlights[0]).toContain("**4 first-year students**");
+    expect(d.stack).toContain("Supabase");
+    expect(d.dates).toBe("October 2026 – Present");
+  });
+  it("lets the resume win over a project's own fields", () => {
+    const d = projectDetails({ ...bySlug("backyard"), role: "Other", stack: "Other", highlights: ["other"] });
+    expect(d.role).toBe("Founding Engineer");
+    expect(d.stack).toBe("React, Express, PostgreSQL");
+    expect(d.highlights).toHaveLength(7);
+  });
   it("drops the descriptive prefix from BBAL Sim's tech line", () => {
-    expect(projectDetails(bySlug("bbal-sim")).stack).toBe("TypeScript, React, Dexie.js (IndexedDB), Web Workers, Vite");
+    expect(projectDetails(bySlug("bbal-sim")).stack).toBe("TypeScript, Python");
   });
 });
 
@@ -45,6 +59,8 @@ describe("modalSections", () => {
     expect(ids("lost-and-hound")).toEqual(["overview", "highlights", "gallery", "stack", "links"]);
     expect(ids("wnba-reference")).toEqual(["overview", "gallery", "links"]);
     expect(ids("backyard")).toEqual(["overview", "highlights", "gallery", "stack", "links"]);
+    expect(ids("husky-exchange")).toEqual(["overview", "highlights", "gallery", "stack", "links"]);
+    expect(ids("lorikeet")).toEqual(["overview", "highlights", "stack", "links"]);
   });
   it("skips the gallery when the only image is already the hero", () => {
     const d = projectDetails({ title: "X", description: "Solo.", images: ["/a/shot.png"], link: "https://x" });
@@ -55,5 +71,24 @@ describe("modalSections", () => {
 describe("sortProjects", () => {
   it("puts active projects first, newest first", () => {
     expect(sortProjects(projects).map((p) => p.slug).slice(0, 2)).toEqual(["backyard", "lost-and-hound"]);
+  });
+  it("puts featured projects next, then everything else newest first", () => {
+    expect(sortProjects(projects).map((p) => p.slug)).toEqual([
+      "backyard", "lost-and-hound", "bbal-sim", "ghost-aquarium", "lorikeet", "husky-exchange", "wnba-reference",
+    ]);
+  });
+  it("features four projects on Home, with Ghost Aquarium in place of WNBA Reference", () => {
+    const featured = projects.filter((p) => p.featured).map((p) => p.slug);
+    expect(featured).toHaveLength(4);
+    expect(featured).toContain("ghost-aquarium");
+    expect(featured).not.toContain("wnba-reference");
+  });
+});
+
+describe("projects data", () => {
+  // The modal indexes images[] and the card renders `cover`; a missing file is a broken tile.
+  it.each(projects.map((p) => [p.slug, p]))("%s has a cover and at least one image on disk", (_, p) => {
+    expect(p.images.length).toBeGreaterThan(0);
+    for (const src of [p.cover, ...p.images].filter(Boolean)) expect(existsSync(`public${src}`), src).toBe(true);
   });
 });

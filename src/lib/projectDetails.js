@@ -2,10 +2,12 @@ import resumeData from "../data/resumeData";
 
 // One merged shape for the hero fronts, grid cards, and modal, so the modal's
 // highlights come from the same resumeData the PDF is built from.
+// A project on the resume takes its role, stack, dates, and highlights from
+// there; one that isn't (the WIP projects) can carry its own in projects.js.
 export function projectDetails(project, resume = resumeData) {
   const r = resume.projects.find((p) => p.name === project.title);
-  // BBAL Sim's tech line leads with a descriptive subtitle ("… Engine  ·  TypeScript, …").
-  const stack = r?.tech ? r.tech.split(/\s{2}·\s{2}/).pop() : null;
+  // Resume tech lines lead with a descriptive subtitle ("… Engine  ·  TypeScript, …").
+  const stack = r?.tech ? r.tech.split(/\s{2}·\s{2}/).pop() : (project.stack ?? null);
   // Cards show only the first sentence; the modal's Overview shows all of it.
   const summary = (project.description ?? "").split(/(?<=\.)\s+/)[0];
   // Cards use the project's optimized cover if it has one; otherwise the first
@@ -13,7 +15,12 @@ export function projectDetails(project, resume = resumeData) {
   const cover = project.cover ?? project.images.find((src) => !/logo/i.test(src)) ?? project.images[0];
   // Page screenshots read best cropped from the top; art like a GIF can opt into "center".
   const coverPosition = project.coverPosition ?? "top";
-  return { ...project, summary, cover, coverPosition, highlights: r?.bullets ?? [], role: r?.role ?? null, stack, dates: r?.dates ?? null };
+  return {
+    ...project, summary, cover, coverPosition, stack,
+    highlights: r?.bullets ?? project.highlights ?? [],
+    role: r?.role ?? project.role ?? null,
+    dates: r?.dates ?? project.dates ?? null,
+  };
 }
 
 export function modalSections(d) {

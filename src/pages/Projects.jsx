@@ -5,6 +5,7 @@ import StarField from "../components/StarField";
 import PageHero from "../components/PageHero";
 import ProjectCard from "../components/ProjectCard";
 import ProjectModal from "../components/ProjectModal";
+import OpenSource from "../components/OpenSource";
 import { projectDetails, sortProjects } from "../lib/projectDetails";
 
 export default function Projects() {
@@ -16,7 +17,7 @@ export default function Projects() {
 
   return (
     <>
-      <PageHero title="Projects" subtitle="Things I've built and shipped." />
+      <PageHero title="Projects" subtitle="Things I've built and shipped, and what I'm building now." />
 
       <div className="relative">
         <StarField />
@@ -42,6 +43,7 @@ export default function Projects() {
             ))}
           </div>
         </section>
+        <OpenSource />
       </div>
 
       <AnimatePresence>

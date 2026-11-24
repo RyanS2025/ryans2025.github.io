@@ -1,12 +1,13 @@
 // Single-column resume following the Northeastern Khoury co-op checklist.
 // Section order is fixed by that checklist:
-//   Header -> Education -> Computer Knowledge -> Projects -> Experience -> Interests
+//   Header -> Education -> Technical Skills -> Projects -> Experience
 //
 // There is no separate Leadership & Activities section. The checklist's
 // Experience section explicitly covers unpaid work, so Oasis and the Diwali
 // Festival live in `experience` alongside the paid jobs, ordered by start date.
-// Merging them reclaimed a section heading and its rule — roughly two lines —
-// which is what pays for the 11pt body.
+//
+// Text matches public/RyanSinhaResume.pdf word for word; only the ** anchors
+// are added, and they mark exactly the runs the PDF sets in bold.
 
 const resumeData = {
   name: "Ryan Sinha",
@@ -24,27 +25,20 @@ const resumeData = {
   },
 
   // Optional — the Summary section renders only when this is non-empty.
-  // Left off deliberately: the page is full and Harvard marks it optional.
   summary: "",
 
   education: [
     {
-      // Rendered as three lines, not one field per line. `school` and
-      // `colleges` share line 1; `degree` and `gpa` share line 2. Giving each
-      // its own line cost four lines for what reads fine as two.
       school: "Northeastern University",
       colleges: "Khoury College of Computer Sciences",
       location: "Boston, MA",
       // Names the major, so there is no separate "Major:" line.
       degree: "Candidate for a Bachelor of Science in Computer Science and Business Administration",
       gpa: "GPA: 3.80/4.0",
-      // Full month names to match every other date on the page. The expected
-      // graduation date sits on the coursework line instead of here: measured
-      // at 10pt, the degree (513px) plus "September 2025 – Present (Expected
-      // May 2029)" (290px) needs 815px of the 720px available and wrapped.
       dates: "September 2025 – Present",
       gradDate: "Expected May 2029",
-      // In-progress courses are marked, which the checklist explicitly allows.
+      // The PDF marks in-progress courses with an asterisk; spelled out here
+      // because the About page shows this list without the PDF's footnote.
       coursework: [
         "Algorithms & Data (in progress)",
         "Computer Systems (in progress)",
@@ -52,64 +46,61 @@ const resumeData = {
         "Program Design & Implementation 1 & 2",
         "Discrete Structures",
         "Financial Accounting & Reporting",
-        "Profit Analysis for Managerial Advising (in progress)",
       ],
       honors: ["Dean's List (Fall 2025, Spring 2026)"],
     },
   ],
 
   // Ordered by impact, not date: Lost and Hound is the live product with an
-  // institutional partnership and leads the section. Bullet text matches
-  // public/RyanSinhaResume.pdf word for word; only the ** anchors are added.
+  // institutional partnership and leads the section.
+  //
+  // `tech` is "Subtitle  ·  stack" (the PDF prints a " | " there).
+  // projectDetails() keeps only the part after the dot for the modal's STACK row.
   projects: [
     {
       name: "Lost and Hound",
       role: "Founder & Project Lead",
       link: { label: "thelostandhound.com", href: "https://thelostandhound.com" },
-      tech: "React, Node.js, Express, Supabase, PostgreSQL, Google Cloud Vision, Capacitor",
+      tech: "Campus Lost-and-Found Platform (Web + iOS)  ·  React, Express, PostgreSQL, Capacitor",
       dates: "February 2026 – Present",
       bullets: [
-        "Drove user acquisition and retention to **150+ users** for a campus platform serving Northeastern's Student Center with a **Capacitor iOS app**.",
-        "Pitched and partnered with **Student Center senior leadership** to unify peer reporting and maximize student engagement.",
-        "Built **real-time layer** for live feed, direct messaging, moderator dashboards, and Google Maps integration.",
-        "Enhanced engagement using **keyword search, category filters, and importance ranking** for high-priority items.",
-        "Automated photo screening across **all user uploads** using **Google Cloud Vision**.",
-        "Secured API with a **requireAuth → require2FA → role-guard** middleware chain, **RLS**, and **tiered rate limiting**.",
-        "Created moderator console with queues, tickets, live stats, and an **infrastructure cost tracker** for spend projection.",
+        "Launched a web and App Store iOS app, growing to **150+ users** and leading development as the team scaled to **10 engineers**.",
+        "Pitched Curry Student Center leadership and delivered a pilot-ready staff system for item inventory, pickup logging, and automated student emails.",
+        "Secured the API with a requireAuth → require2FA → role-guard middleware chain, row-level security, and tiered rate limiting.",
+        "Built a real-time layer for the live feed, direct messaging, and moderator dashboards, with Google Maps integration.",
+        "Automated screening of all user-uploaded photos using Google Cloud Vision.",
+        "Created a moderator console with queues, tickets, live stats, and an infrastructure cost tracker for spend projection.",
       ],
     },
     {
       name: "Backyard",
       role: "Founding Engineer",
       link: { label: "explorethebackyard.com", href: "https://explorethebackyard.com" },
-      tech: "React, Express, Supabase, PostgreSQL, Vite, Tailwind CSS",
+      tech: "Campus Club Discovery Platform  ·  React, Express, PostgreSQL",
       dates: "May 2026 – Present",
       bullets: [
-        "Centralized campus club discovery and event marketing to boost **student onboarding** and **active engagement**.",
-        "Designed **core authentication system** (login, signup, reset, transactional email), club calendar, and search.",
-        "Built a **full-stack content moderation system** featuring profanity filtering and Cloud Vision SafeSearch image scanning.",
-        "Identified and patched **four world-writable Postgres RLS policies** exposing emails and administrative endpoints.",
-        "Eliminated direct browser DB access using a **JWT-verified Express API** and standardized mass-assignment allowlists.",
-        "Spearheaded marketing outreach and onboarding wizard, acquiring **15+ student clubs** via hashed invite links.",
+        "Found and patched 4 world-writable Postgres RLS policies that exposed user emails and admin endpoints.",
+        "Eliminated direct browser database access with a JWT-verified Express API and mass-assignment allowlists.",
+        "On an 8-engineer team, designed core auth (login, signup, reset, email), the club calendar, and search.",
+        "Built a content moderation pipeline with profanity filtering and Cloud Vision SafeSearch image scanning.",
+        "Redesigned all 9 pages with light/dark mode and mobile layouts verified at 360 px wide in both themes.",
+        "Added preloading and caching, making calendar loads **7× faster** (658 → 89 ms) and opening club pages in 31 ms.",
+        "Led outreach and built an onboarding wizard, signing **15+ student clubs** through hashed invite links.",
       ],
     },
     {
       name: "BBAL Sim",
-      // "Solo Developer" keeps the title line parallel with the other two
-      // projects and, measured at 10pt, keeps it to one line (479px of the
-      // 566px available). The descriptive subtitle moved to the italic line
-      // below, which had room for it (683px of 720px).
       role: "Solo Developer",
       link: {
-        label: "github.com/RyanS2025/NBA-Season-Simulation",
-        href: "https://github.com/RyanS2025/NBA-Season-Simulation",
+        label: "github.com/RyanS2025/Basketball-Season-Simulation",
+        href: "https://github.com/RyanS2025/Basketball-Season-Simulation",
       },
-      tech: "Basketball League Simulation Engine  ·  TypeScript, React, Dexie.js (IndexedDB), Web Workers, Vite",
+      tech: "Basketball League Simulation Engine  ·  TypeScript, Python",
       dates: "October 2025 – August 2026",
       bullets: [
-        "Rebuilt Python simulator in **TypeScript**, enabling a **1,230-game season simulation in 10s** off main thread.",
-        "Engineered game outcomes using player matchups across **29 skills and 22 tendencies** instead of single ratings.",
-        "Integrated **10 personality traits** and a **100-writer press corps** dynamic to drive realistic award voting.",
+        "Rebuilt a Python simulator in TypeScript, running a **1,230-game season in 10 seconds** off the main thread.",
+        "Modeled game outcomes from player matchups across 29 skills and 22 tendencies instead of single overall ratings.",
+        "Added 10 personality traits and a 100-writer simulated press corps to drive realistic award voting.",
       ],
     },
   ],
@@ -120,38 +111,38 @@ const resumeData = {
     {
       company: "Oasis at Northeastern",
       location: "Boston, MA",
-      title: "Accelerator Project Lead & Project Mentor",
+      title: "Accelerator Project Lead & Mentor",
       dates: "September 2026 – Present",
       bullets: [
-        "Lead **two Accelerator teams totaling 18–20 developers**, directing sprint planning, code review, and task allocation.",
-        "Mentor **3 first-year students** through full-stack software development, taking a project from setup to deployment.",
+        "Lead 2 accelerator teams totaling **18–20 developers**, running sprint planning, code review, and task allocation.",
+        "Mentor 4 first-year students through full-stack development, taking a project from setup to deployment.",
       ],
     },
     {
-      // The resume merges both seasonal jobs into one entry.
-      company: "Guerriero Gelato & Tropical Smoothie Cafe",
-      location: "Caldwell, NJ; Livingston, NJ",
-      title: "Retail & Food Service (Seasonal)",
+      // The PDF leads this line with the title ("Shift Leader — Guerriero
+      // Gelato; Tropical Smoothie Cafe"); the fields keep the usual shape.
+      company: "Guerriero Gelato; Tropical Smoothie Cafe",
+      location: "NJ (Seasonal)",
+      title: "Shift Leader",
       dates: "May 2023 – August 2026",
       bullets: [
-        "Promoted to **Shift Leader**, managing teams of **3–5 staff** and serving **150+ customers per shift** during peak hours.",
+        "Promoted to Shift Leader, managing teams of 3–5 staff and serving 150+ customers per shift.",
       ],
     },
     {
       company: "United Asian Voices Diwali Festival",
       location: "West Orange, NJ",
-      title: "Emcee & Founding Organizer",
+      title: "Co-Founder & Emcee",
       // A recurring one-day festival each October, not a continuous role.
       dates: "October 2022 – October 2025",
       bullets: [
-        "Co-founded local festival, growing attendance to **200+ guests** and recruiting **20+ partner organizations**.",
+        "Co-founded a local festival, growing attendance to **200+** guests with 20+ partner organizations.",
       ],
     },
   ],
 
-  // Rendered under the heading "Computer Knowledge" per the checklist.
-  // Languages are ordered best-to-least as the checklist requires; the order
-  // below is Ryan's own assessment of his proficiency.
+  // Languages are ordered best-to-least, per the checklist; the order is
+  // Ryan's own assessment of his proficiency.
   skills: [
     {
       category: "Languages",
@@ -159,23 +150,20 @@ const resumeData = {
     },
     {
       category: "Frameworks & Libraries",
-      items: ["React 19", "Node.js", "Express 5", "Tailwind CSS", "Material UI", "Framer Motion", "Capacitor"],
+      items: ["React", "Node.js", "Express", "Tailwind CSS", "Material UI", "Framer Motion", "Capacitor (iOS)"],
     },
     {
       category: "Tools & Platforms",
       items: [
-        "Git", "GitHub Actions", "Supabase", "PostgreSQL", "Google Maps API", "Google Cloud Vision",
-        "OneSignal", "Playwright", "Vitest", "Docker", "Railway", "Vercel", "Vite",
-        "Mobile iOS Development", "Start-Up Marketing",
+        "Git", "GitHub Actions", "Docker", "PostgreSQL", "Supabase", "Railway", "Vercel", "Vite",
+        "Playwright", "Vitest", "Google Cloud Vision", "Google Maps API", "OneSignal",
       ],
     },
   ],
 
-  // A short list, not a sentence. Programming and BBAL Sim deliberately left
-  // out — they are already the Projects section, and Interests should show
-  // something the rest of the page does not.
-  interests:
-    "Jazz trumpet  ·  Playing basketball  ·  Sports analytics  ·  New York sports teams",
+  // Not on the PDF any more; kept for ResumeTemplate, which renders it only
+  // when present. Empty so the template and PDF agree.
+  interests: "",
 };
 
 export default resumeData;
