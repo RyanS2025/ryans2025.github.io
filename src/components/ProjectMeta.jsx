@@ -4,8 +4,9 @@ export function StatusPill({ project }) {
   if (project.comingSoon) {
     return <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-amber text-space">Coming Soon</span>;
   }
+  // `active` means deployed and publicly reachable, even if development has ended.
   if (project.active) {
-    return <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#4ade80] text-[#06130a]">Active</span>;
+    return <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#4ade80] text-[#06130a]">Live</span>;
   }
   // Outlined rather than filled: still being built, not live yet.
   if (project.wip) {
